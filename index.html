@@ -1,768 +1,871 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <!-- ========= METADATOS ========= -->
+  <!-- =========================
+       META / SEO BÁSICO
+  ========================== -->
   <meta charset="UTF-8" />
-  <title>Marcos López Fernández | Webs para bares y restaurantes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description"
-        content="Diseño de páginas web sencillas y profesionales para bares y restaurantes. Servicios de Marcos López Fernández." />
+  <title>TodosWebs | Webs para bares y restaurantes</title>
+  <meta name="description" content="TodosWebs: webs sencillas y profesionales para bares y restaurantes. Carta, fotos, horarios, contacto y mapa. Entrega rápida." />
 
-  <!-- ========= ESTILOS ========= -->
+  <!-- (Opcional) Icono pestaña -->
+  <!-- <link rel="icon" href="favicon.png" /> -->
+
   <style>
-    :root {
+    /* =========================
+       PALETA (misma tonalidad, más juego)
+    ========================== */
+    :root{
+      --bg: #fbf6ef;
+      --bg2: #fffaf4;
+      --text: #2b2b2b;
+      --muted: #6c6c6c;
+
       --primary: #c56a3a;
-      --primary-dark: #a0522d;
-      --bg: #f7f3ec;
-      --bg-soft: #fffaf4;
-      --text: #333333;
-      --muted: #777777;
-      --border-soft: #e3d6c5;
-      --radius: 16px;
-      --shadow-soft: 0 10px 20px rgba(0, 0, 0, 0.09);
-      --max-width: 1100px;
+      --primary2: #e18a5f;
+      --primaryDark: #9b4f2c;
+
+      --border: #eadac7;
+      --shadow: 0 14px 30px rgba(0,0,0,.10);
+      --shadow2: 0 10px 22px rgba(0,0,0,.08);
+
+      --radius: 18px;
+      --max: 1120px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
+    /* =========================
+       RESET
+    ========================== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 20% -10%, #ffe7cf 0%, transparent 60%),
+                  radial-gradient(900px 500px at 100% 10%, #ffd7c6 0%, transparent 55%),
+                  var(--bg);
       color: var(--text);
       line-height: 1.6;
       scroll-behavior: smooth;
     }
+    a{ color: inherit; text-decoration: none; }
+    img{ max-width: 100%; display: block; }
+    .container{ max-width: var(--max); margin: 0 auto; padding: 0 1.2rem; }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    /* =========================
+       NAVBAR (más pro y limpia)
+    ========================== */
+    header{
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(251,246,239,.82);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(234,218,199,.7);
     }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(247, 243, 236, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid #e7ddcf;
-    }
-
-    .nav {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0.7rem 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .nav{
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .9rem 0;
       gap: 1rem;
     }
-
-    /* Logo / tu nombre */
-    .logo {
-      display: flex;
-      flex-direction: column;
-      gap: 0.1rem;
+    .brand{
+      display:flex; flex-direction:column; gap: .1rem;
     }
-
-    .logo-main {
-      font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: 0.15em;
+    .brand-title{
+      font-weight: 800;
+      letter-spacing: .10em;
       text-transform: uppercase;
+      font-size: .98rem;
     }
-
-    .logo-sub {
-      font-size: 0.8rem;
+    .brand-sub{
+      font-size: .82rem;
       color: var(--muted);
     }
 
-    /* Menú navegación */
-    .nav-links {
-      display: flex;
-      gap: 1rem;
-      font-size: 0.9rem;
+    .nav-links{
+      display:flex; gap:.6rem; flex-wrap: wrap;
+      font-size: .92rem;
     }
-
-    .nav-links a {
-      padding: 0.35rem 0.7rem;
+    .nav-links a{
+      padding: .35rem .7rem;
       border-radius: 999px;
-      transition: background 0.2s, color 0.2s;
+      border: 1px solid transparent;
+      transition: background .18s ease, transform .18s ease, border-color .18s ease;
+    }
+    .nav-links a:hover{
+      background: rgba(197,106,58,.12);
+      border-color: rgba(197,106,58,.25);
+      transform: translateY(-1px);
     }
 
-    .nav-links a:hover {
-      background: var(--primary);
-      color: #ffffff;
-    }
-
-    .nav-cta {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-    }
-
-    .pill-small {
-      border-radius: 999px;
-      padding: 0.2rem 0.6rem;
-      background: #ffffff;
-      border: 1px solid var(--border-soft);
-      color: var(--muted);
-    }
-
-    .btn,
-    .btn-outline {
-      border-radius: 999px;
-      border: none;
-      padding: 0.5rem 1.1rem;
-      cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease, background 0.1s ease;
+    .nav-cta{
+      display:flex; align-items:center; gap:.6rem;
+      font-size: .9rem;
       white-space: nowrap;
     }
-
-    .btn {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #ffffff;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.18);
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.03);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
-    }
-
-    .btn-outline {
-      border: 1px solid var(--primary);
-      background: #ffffff;
-      color: var(--primary-dark);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    }
-
-    .btn-outline:hover {
-      background: var(--primary);
-      color: #ffffff;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.16);
-    }
-
-    main {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 1.8rem 1.2rem 3rem;
-    }
-
-    /* ========= HERO (tu portada) ========= */
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
-      gap: 2.2rem;
-      align-items: center;
-      padding: 2rem;
-      border-radius: 26px;
-      background: var(--bg-soft);
-      box-shadow: var(--shadow-soft);
-      margin-top: 1.8rem;
-      border: 1px solid var(--border-soft);
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.25rem 0.7rem;
+    .pill{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.78);
       border-radius: 999px;
-      background: #ffffff;
-      border: 1px solid var(--border-soft);
-      font-size: 0.78rem;
+      padding: .3rem .7rem;
       color: var(--muted);
-      margin-bottom: 0.9rem;
     }
 
-    .badge-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #26a35a;
+    /* =========================
+       BOTONES / MICROINTERACCIONES
+    ========================== */
+    .btn{
+      border: none;
+      border-radius: 999px;
+      padding: .55rem 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      display:inline-flex; align-items:center; gap:.45rem;
+      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+      box-shadow: 0 10px 18px rgba(0,0,0,.16);
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.03); }
+    .btn:active{ transform: translateY(0); box-shadow: 0 8px 14px rgba(0,0,0,.14); }
+
+    .btn-outline{
+      border-radius: 999px;
+      padding: .55rem 1.05rem;
+      background: rgba(255,255,255,.9);
+      border: 1px solid rgba(197,106,58,.55);
+      color: var(--primaryDark);
+      font-weight: 700;
+      cursor:pointer;
+      display:inline-flex; align-items:center; gap:.45rem;
+      transition: background .16s ease, transform .16s ease, box-shadow .16s ease;
+      box-shadow: 0 8px 14px rgba(0,0,0,.08);
+    }
+    .btn-outline:hover{
+      background: rgba(197,106,58,.10);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(0,0,0,.10);
     }
 
-    .hero h1 {
-      font-size: clamp(2rem, 4vw, 2.7rem);
-      margin-bottom: 0.5rem;
+    /* =========================
+       HERO (más animado y con fondo distinto)
+    ========================== */
+    .hero-wrap{
+      padding: 2.2rem 0 1.4rem;
+    }
+    .hero{
+      border: 1px solid rgba(234,218,199,.85);
+      background: linear-gradient(180deg, rgba(255,250,244,.95), rgba(255,250,244,.72));
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+    /* Fondo decorativo tipo “blob” */
+    .hero::before{
+      content:"";
+      position:absolute;
+      width: 520px; height: 520px;
+      right: -220px; top: -240px;
+      background: radial-gradient(circle at 35% 35%, rgba(225,138,95,.35), transparent 55%),
+                  radial-gradient(circle at 60% 70%, rgba(197,106,58,.25), transparent 58%);
+      filter: blur(2px);
+      transform: rotate(12deg);
+    }
+    .hero-grid{
+      position: relative;
+      display:grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      gap: 2rem;
+      padding: 2.2rem;
+      align-items: center;
     }
 
-    .hero h1 span {
-      color: var(--primary-dark);
-    }
-
-    .hero-sub {
-      font-size: 0.98rem;
+    .badge{
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding: .25rem .75rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid var(--border);
       color: var(--muted);
-      max-width: 32rem;
+      font-size: .82rem;
+      width: fit-content;
+      margin-bottom: .85rem;
+    }
+    .dot{
+      width: 9px; height: 9px; border-radius: 50%;
+      background: #28a964;
+      box-shadow: 0 0 0 4px rgba(40,169,100,.12);
+    }
+
+    h1{
+      font-size: clamp(2rem, 4vw, 2.85rem);
+      line-height: 1.12;
+      margin-bottom: .7rem;
+    }
+    h1 span{ color: var(--primaryDark); }
+
+    .hero-p{
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 36rem;
       margin-bottom: 1.2rem;
     }
 
-    .hero-list {
-      font-size: 0.9rem;
-      margin-bottom: 1.4rem;
+    .hero-actions{
+      display:flex; flex-wrap: wrap; gap:.75rem; align-items:center;
+      margin-top: .2rem;
+    }
+
+    .mini-info{
+      display:flex; flex-wrap: wrap; gap: .55rem;
+      margin-top: 1.1rem;
+    }
+    .chip{
+      background: rgba(255,255,255,.85);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: .28rem .65rem;
       color: var(--muted);
+      font-size: .86rem;
     }
 
-    .hero-list li {
-      margin-left: 1.1rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      align-items: center;
-      font-size: 0.85rem;
-    }
-
-    .hero-note {
-      color: var(--muted);
-    }
-
-    .hero-right {
+    /* Lado derecho: “mockup” con tarjeta que flota */
+    .mock{
       position: relative;
-      min-height: 220px;
+      min-height: 260px;
     }
-
-    /* Bloque tipo tarjeta, donde podrías poner logos o mockups */
-    .hero-card {
-      position: absolute;
-      inset: 0;
+    .mock-card{
+      position:absolute; inset:0;
       border-radius: 22px;
-      overflow: hidden;
-      background: linear-gradient(135deg, #ffe1b7, #f2b48c);
-      box-shadow: var(--shadow-soft);
-      padding: 1.2rem 1.3rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      background: linear-gradient(135deg, rgba(255,231,207,.9), rgba(242,180,140,.75));
+      border: 1px solid rgba(234,218,199,.8);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      padding: 1.2rem;
     }
-
-    .hero-card-top {
-      background: rgba(255,255,255,0.92);
-      padding: 0.9rem 1rem;
-      border-radius: 14px;
-      font-size: 0.9rem;
+    .mock-card::before{
+      content:"";
+      position:absolute; inset:-40px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.55), transparent 45%),
+                  radial-gradient(circle at 70% 70%, rgba(255,255,255,.30), transparent 52%);
+      transform: rotate(-8deg);
     }
-
-    .hero-card-title {
-      font-weight: 600;
-      margin-bottom: 0.25rem;
+    .mock-inner{
+      position:relative;
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(234,218,199,.8);
+      border-radius: 16px;
+      padding: 1rem;
+      backdrop-filter: blur(6px);
     }
-
-    .hero-card-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      font-size: 0.78rem;
-      margin-top: 0.4rem;
+    .mock-title{ font-weight: 800; margin-bottom: .25rem; }
+    .mock-sub{ color: var(--muted); font-size: .92rem; }
+    .mock-tags{
+      display:flex; flex-wrap: wrap; gap:.45rem;
+      margin-top: .7rem;
+      font-size: .82rem;
     }
-
-    .tag {
-      padding: 0.18rem 0.55rem;
+    .tag{
+      padding: .2rem .55rem;
       border-radius: 999px;
-      background: #fffaf4;
-      border: 1px solid #f0d7b5;
-      color: #a36b3b;
+      background: rgba(255,250,244,.9);
+      border: 1px solid rgba(234,218,199,.9);
+      color: var(--primaryDark);
     }
-
-    .hero-card-bottom {
-      align-self: flex-end;
-      margin-top: 1rem;
-      font-size: 0.8rem;
-      background: rgba(255,255,255,0.9);
-      padding: 0.5rem 0.8rem;
+    .float-note{
+      position:absolute;
+      right: 18px; bottom: 18px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(234,218,199,.9);
       border-radius: 999px;
-      color: #8a5d30;
+      padding: .45rem .75rem;
+      font-size: .82rem;
+      color: var(--primaryDark);
+      box-shadow: 0 10px 18px rgba(0,0,0,.08);
+      animation: bob 3.8s ease-in-out infinite;
+    }
+    @keyframes bob{
+      0%,100%{ transform: translateY(0); }
+      50%{ transform: translateY(-6px); }
     }
 
-    /* ========= SECCIONES GENERALES ========= */
-    section {
-      margin-top: 3rem;
+    /* =========================
+       SECCIONES / CARDS
+    ========================== */
+    section{ padding: 2.6rem 0; }
+    .section-title{
+      font-size: 1.55rem;
+      margin-bottom: .35rem;
     }
-
-    .section-title {
-      font-size: 1.5rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .section-subtitle {
-      font-size: 0.9rem;
+    .section-subtitle{
       color: var(--muted);
-      margin-bottom: 1.5rem;
-      max-width: 36rem;
+      max-width: 44rem;
+      margin-bottom: 1.4rem;
+      font-size: .98rem;
     }
 
-    .grid-3 {
-      display: grid;
+    .grid-3{
+      display:grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 1.2rem;
     }
 
-    .card {
-      background: #ffffff;
+    .card{
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(234,218,199,.9);
       border-radius: var(--radius);
-      padding: 1.4rem 1.5rem;
-      border: 1px solid var(--border-soft);
-      box-shadow: var(--shadow-soft);
-      font-size: 0.9rem;
+      padding: 1.25rem 1.25rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,.06);
+      transition: transform .18s ease, box-shadow .18s ease;
     }
-
-    .card h3 {
-      font-size: 1.05rem;
-      margin-bottom: 0.6rem;
+    .card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 18px 36px rgba(0,0,0,.10);
     }
+    .card h3{ font-size: 1.05rem; margin-bottom: .5rem; }
+    .card p{ color: var(--muted); font-size: .93rem; }
+    .card ul{ margin: .7rem 0 0 1.1rem; color: var(--muted); font-size: .92rem; }
+    .card li{ margin-bottom: .25rem; }
 
-    .price {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin: 0.4rem 0 0.6rem;
-      color: var(--primary-dark);
+    .price{
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--primaryDark);
+      margin: .5rem 0 .6rem;
     }
-
-    .pill {
-      display: inline-block;
-      font-size: 0.78rem;
-      padding: 0.2rem 0.55rem;
+    .pill2{
+      display:inline-block;
+      font-size: .78rem;
+      color: var(--muted);
+      border: 1px solid rgba(234,218,199,.95);
+      background: rgba(255,250,244,.9);
+      padding: .22rem .6rem;
       border-radius: 999px;
-      background: #fffaf4;
-      border: 1px solid var(--border-soft);
-      color: var(--muted);
-      margin-bottom: 0.5rem;
+      margin-bottom: .5rem;
     }
 
-    ul.features {
-      margin-left: 1.1rem;
-      margin-top: 0.5rem;
-      margin-bottom: 0.8rem;
+    /* =========================
+       BANDA CON FONDO DISTINTO (sin imagen real)
+       Si quieres foto real: cambia background-image por url("tu-foto.jpg")
+    ========================== */
+    .band{
+      border-top: 1px solid rgba(234,218,199,.8);
+      border-bottom: 1px solid rgba(234,218,199,.8);
+      background:
+        linear-gradient(135deg, rgba(197,106,58,.18), rgba(225,138,95,.10)),
+        radial-gradient(800px 300px at 10% 20%, rgba(255,255,255,.8), transparent 65%),
+        radial-gradient(900px 420px at 90% 70%, rgba(255,255,255,.65), transparent 62%),
+        #fff7ef;
+      border-radius: 26px;
+      padding: 2.2rem;
+      box-shadow: var(--shadow2);
+    }
+    .band-grid{
+      display:grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: 1.6rem;
+      align-items: center;
+    }
+    .band h2{ font-size: 1.5rem; margin-bottom: .4rem; }
+    .band p{ color: var(--muted); }
+
+    /* =========================
+       PORTFOLIO (para enseñar webs reales)
+    ========================== */
+    .portfolio{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.1rem;
+    }
+    .work{
+      border-radius: 18px;
+      overflow:hidden;
+      border: 1px solid rgba(234,218,199,.9);
+      background: rgba(255,255,255,.9);
+      box-shadow: 0 10px 20px rgba(0,0,0,.06);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .work:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 18px 36px rgba(0,0,0,.10);
+    }
+    .work-top{
+      height: 150px;
+      background:
+        linear-gradient(135deg, rgba(197,106,58,.25), rgba(225,138,95,.18)),
+        radial-gradient(260px 140px at 20% 30%, rgba(255,255,255,.75), transparent 55%),
+        radial-gradient(300px 160px at 80% 70%, rgba(255,255,255,.60), transparent 58%);
+      display:flex; align-items:flex-end; justify-content: space-between;
+      padding: 1rem;
+    }
+    .work-name{
+      font-weight: 900;
+      color: #3a2a20;
+    }
+    .work-chip{
+      font-size: .78rem;
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(234,218,199,.95);
+      border-radius: 999px;
+      padding: .22rem .6rem;
+      color: var(--primaryDark);
+    }
+    .work-body{ padding: 1rem; }
+    .work-body p{ color: var(--muted); font-size: .92rem; margin-top: .35rem; }
+    .work-actions{
+      display:flex; gap:.6rem; flex-wrap: wrap;
+      margin-top: .8rem;
     }
 
-    ul.features li {
-      margin-bottom: 0.25rem;
+    /* =========================
+       CONTACTO / FORM
+    ========================== */
+    .contact-grid{
+      display:grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 1.6rem;
+      align-items: start;
     }
-
-    /* Cómo trabajo */
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-      font-size: 0.9rem;
+    form{
+      display:flex; flex-direction: column; gap: .75rem;
+      font-size: .92rem;
     }
-
-    .step-number {
-      font-weight: 700;
-      color: var(--primary-dark);
-      margin-bottom: 0.2rem;
-    }
-
-    /* Contacto / formulario */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 1.8rem;
-      align-items: flex-start;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-      font-size: 0.9rem;
-    }
-
-    label {
-      font-weight: 500;
-      font-size: 0.86rem;
-    }
-
-    input,
-    textarea,
-    select {
-      border-radius: 10px;
-      border: 1px solid var(--border-soft);
-      padding: 0.55rem 0.7rem;
+    label{ font-weight: 700; font-size: .84rem; color: #3a2a20; }
+    input, select, textarea{
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(234,218,199,.95);
+      padding: .6rem .75rem;
+      background: rgba(255,253,249,.95);
       font-family: inherit;
-      font-size: 0.9rem;
-      background: #fffdf9;
+      font-size: .95rem;
+      outline: none;
     }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(197,106,58,.65);
+      box-shadow: 0 0 0 4px rgba(197,106,58,.12);
     }
+    textarea{ min-height: 110px; resize: vertical; }
 
-    .contact-info {
-      font-size: 0.9rem;
+    .note{
       color: var(--muted);
+      font-size: .85rem;
+      margin-top: .6rem;
     }
+    .contact-card p{ color: var(--muted); margin-bottom: .4rem; }
+    .contact-card strong{ color: var(--text); }
 
-    .contact-info p {
-      margin-bottom: 0.4rem;
-    }
-
-    .contact-info strong {
-      color: var(--text);
-    }
-
-    footer {
-      border-top: 1px solid #e3d6c5;
-      padding: 1.4rem 1.2rem 2rem;
-      font-size: 0.8rem;
+    /* =========================
+       FOOTER
+    ========================== */
+    footer{
+      margin-top: 1.6rem;
+      border-top: 1px solid rgba(234,218,199,.85);
+      background: rgba(255,250,244,.85);
+      text-align:center;
+      padding: 1.4rem 1rem 2rem;
       color: var(--muted);
-      text-align: center;
-      background: #fffaf4;
-      margin-top: 1.5rem;
+      font-size: .85rem;
     }
 
-    footer span {
-      display: block;
-      margin-top: 0.2rem;
+    /* =========================
+       REVEAL ANIMATIONS
+    ========================== */
+    .reveal{
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .7s ease, transform .7s ease;
     }
-
-    /* ========= RESPONSIVE ========= */
-    @media (max-width: 900px) {
-      .hero {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .hero-right {
-        min-height: 200px;
-        order: -1;
-      }
-      .nav-links {
-        display: none;
-      }
-      .contact-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
+    .reveal.visible{
+      opacity: 1;
+      transform: translateY(0);
     }
+    .reveal.delay-1{ transition-delay: .08s; }
+    .reveal.delay-2{ transition-delay: .16s; }
+    .reveal.delay-3{ transition-delay: .24s; }
 
-    @media (max-width: 600px) {
-      main {
-        padding-inline: 1rem;
-      }
-      .hero {
-        padding-inline: 1rem;
-      }
+    /* =========================
+       RESPONSIVE
+    ========================== */
+    @media (max-width: 920px){
+      .nav-links{ display:none; }
+      .hero-grid{ grid-template-columns: 1fr; }
+      .mock{ order: -1; min-height: 230px; }
+      .band-grid{ grid-template-columns: 1fr; }
+      .contact-grid{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px){
+      .hero-grid{ padding: 1.4rem; }
+      .band{ padding: 1.4rem; }
+      .pill{ display:none; }
     }
   </style>
 </head>
+
 <body>
-  <!-- ========= CABECERA ========= -->
+  <!-- =========================
+       HEADER / NAV
+  ========================== -->
   <header>
-    <nav class="nav">
-      <!-- Tu “logo” personal -->
-      <div class="logo">
-        <span class="logo-main">MARCOS LÓPEZ FERNÁNDEZ</span>
-        <span class="logo-sub">Webs para bares y restaurantes</span>
-      </div>
+    <div class="container">
+      <div class="nav">
+        <!-- Marca -->
+        <div class="brand">
+          <div class="brand-title">TODOSWEBS</div>
+          <div class="brand-sub">Webs sencillas para bares y restaurantes</div>
+        </div>
 
-      <!-- Menú (escritorio) -->
-      <div class="nav-links">
-        <a href="#servicios">Servicios</a>
-        <a href="#proceso">Cómo trabajo</a>
-        <a href="#precios">Precios</a>
-        <a href="#contacto">Contacto</a>
-      </div>
+        <!-- Navegación -->
+        <nav class="nav-links" aria-label="Navegación">
+          <a href="#servicios">Servicios</a>
+          <a href="#precios">Precios</a>
+          <a href="#portfolio">Ejemplos</a>
+          <a href="#contacto">Contacto</a>
+        </nav>
 
-      <!-- CTA rápido -->
-      <div class="nav-cta">
-        <div class="pill-small">📞 683 46 44 20</div>
-        <button class="btn-outline" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
-          Pide tu web
-        </button>
+        <!-- CTA -->
+        <div class="nav-cta">
+          <div class="pill">📞 683 46 44 20</div>
+          <button class="btn-outline" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
+            Pide tu web
+          </button>
+        </div>
       </div>
-    </nav>
+    </div>
   </header>
 
-  <!-- ========= CONTENIDO PRINCIPAL ========= -->
-  <main>
-    <!-- ========= HERO ========= -->
-    <section class="hero" id="inicio">
-      <div>
-        <div class="badge">
-          <span class="badge-dot"></span>
-          Webs sencillas para bares y restaurantes de barrio
+  <!-- =========================
+       HERO
+  ========================== -->
+  <div class="container hero-wrap">
+    <section class="hero reveal">
+      <div class="hero-grid">
+        <div>
+          <div class="badge">
+            <span class="dot"></span>
+            Entrega rápida · Ideal para negocios sin web
+          </div>
+
+          <h1>Tu bar en internet con una web <span>bonita, rápida</span> y lista para móvil</h1>
+
+          <p class="hero-p">
+            En <strong>TodosWebs</strong> te creo una web clara con lo que realmente importa:
+            carta, fotos, horarios, mapa, botón de llamada y WhatsApp.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
+              Quiero presupuesto
+            </button>
+            <button class="btn-outline" onclick="document.getElementById('precios').scrollIntoView({behavior:'smooth'})">
+              Ver packs
+            </button>
+            <span class="note">Respuesta en menos de 24h</span>
+          </div>
+
+          <div class="mini-info">
+            <span class="chip">✅ Diseño profesional</span>
+            <span class="chip">✅ Carta + PDF</span>
+            <span class="chip">✅ Mapa y contacto</span>
+            <span class="chip">✅ Publicación online</span>
+          </div>
         </div>
 
-        <h1>Diseño tu <span>página web</span> para que tus clientes te encuentren fácil</h1>
-
-        <p class="hero-sub">
-          Me llamo Marcos López Fernández y creo páginas web claras, rápidas y pensadas
-          para bares y restaurantes: carta online, fotos, horarios y contacto directo.
-        </p>
-
-        <ul class="hero-list">
-          <li>Tu bar en Google con una web que se ve bien en el móvil.</li>
-          <li>Carta online y en PDF, lista para enseñar a tus clientes.</li>
-          <li>Botón para llamar, WhatsApp y ubicación en Google Maps.</li>
-        </ul>
-
-        <div class="hero-actions">
-          <button class="btn" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
-            Quiero pedir presupuesto
-          </button>
-          <button class="btn-outline" onclick="document.getElementById('precios').scrollIntoView({behavior:'smooth'})">
-            Ver packs y precios
-          </button>
-          <span class="hero-note">
-            Respondo por WhatsApp o email en menos de 24h.
-          </span>
+        <!-- Mockup a la derecha -->
+        <div class="mock reveal delay-1">
+          <div class="mock-card">
+            <div class="mock-inner">
+              <div class="mock-title">Lo que incluye tu web</div>
+              <div class="mock-sub">Secciones típicas para bar/restaurante</div>
+              <div class="mock-tags">
+                <span class="tag">Portada con foto</span>
+                <span class="tag">Carta online</span>
+                <span class="tag">Descarga PDF</span>
+                <span class="tag">Mapa Google</span>
+                <span class="tag">Botón llamar</span>
+              </div>
+            </div>
+            <div class="float-note">🚀 Lista para compartir por WhatsApp</div>
+          </div>
         </div>
       </div>
+    </section>
+  </div>
 
-      <div class="hero-right">
-        <div class="hero-card">
-          <div class="hero-card-top">
-            <div class="hero-card-title">¿Qué incluye tu web?</div>
-            <div>Ejemplo de secciones:</div>
-            <div class="hero-card-tags">
-              <span class="tag">Inicio con foto del local</span>
-              <span class="tag">Carta online</span>
-              <span class="tag">Descarga de carta en PDF</span>
-              <span class="tag">Mapa y contacto</span>
+  <!-- =========================
+       SERVICIOS
+  ========================== -->
+  <div class="container">
+    <section id="servicios">
+      <h2 class="section-title reveal">Servicios</h2>
+      <p class="section-subtitle reveal delay-1">
+        Lo simple vende: una web rápida, bonita y fácil de entender. Sin complicaciones.
+      </p>
+
+      <div class="grid-3">
+        <article class="card reveal">
+          <h3>Web One-Page</h3>
+          <span class="pill2">Para bares sin web</span>
+          <p>Una sola página con lo esencial, perfecta para empezar.</p>
+          <ul>
+            <li>Inicio + sobre + carta + contacto</li>
+            <li>Botón de llamada y WhatsApp</li>
+            <li>Mapa y horarios</li>
+          </ul>
+        </article>
+
+        <article class="card reveal delay-1">
+          <h3>Web Completa</h3>
+          <span class="pill2">Para restaurantes</span>
+          <p>Más secciones y carta organizada por categorías.</p>
+          <ul>
+            <li>Carta por secciones</li>
+            <li>Galería con fotos</li>
+            <li>Formulario (seguro) de contacto</li>
+          </ul>
+        </article>
+
+        <article class="card reveal delay-2">
+          <h3>Mantenimiento</h3>
+          <span class="pill2">Tú no te preocupas</span>
+          <p>Actualizaciones de carta, horarios y soporte.</p>
+          <ul>
+            <li>Cambios mensuales</li>
+            <li>Hosting/tecnico (opcional)</li>
+            <li>Soporte rápido</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- =========================
+         BANDA CON FONDO DISTINTO
+    ========================== -->
+    <section class="reveal">
+      <div class="band">
+        <div class="band-grid">
+          <div>
+            <h2>Haz que te encuentren y te llamen</h2>
+            <p>
+              Mucha gente busca “bar cerca” o el nombre del local y se va si no encuentra nada claro.
+              Con una web sencilla, tienes todo ordenado y profesional.
+            </p>
+          </div>
+          <div style="display:flex; gap:.7rem; flex-wrap:wrap; justify-content:flex-start;">
+            <button class="btn" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
+              Empezar ahora
+            </button>
+            <button class="btn-outline" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">
+              Ver ejemplos
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+       PRECIOS
+    ========================== -->
+    <section id="precios">
+      <h2 class="section-title reveal">Packs y precios</h2>
+      <p class="section-subtitle reveal delay-1">
+        Precios orientativos. Ajusto según carta, fotos, secciones e idioma.
+      </p>
+
+      <div class="grid-3">
+        <article class="card reveal">
+          <h3>Pack Presencia</h3>
+          <span class="pill2">One-page</span>
+          <div class="price">Desde 250 €</div>
+          <p>Perfecta para bares que necesitan estar ya en internet.</p>
+          <div style="margin-top:.9rem;">
+            <button class="btn-outline" onclick="prefillPack('Pack Presencia')">Me interesa</button>
+          </div>
+        </article>
+
+        <article class="card reveal delay-1">
+          <h3>Pack Restaurante</h3>
+          <span class="pill2">Más secciones</span>
+          <div class="price">Desde 450 €</div>
+          <p>Carta organizada, galería, y sección de menús/eventos.</p>
+          <div style="margin-top:.9rem;">
+            <button class="btn-outline" onclick="prefillPack('Pack Restaurante')">Me interesa</button>
+          </div>
+        </article>
+
+        <article class="card reveal delay-2">
+          <h3>Mantenimiento</h3>
+          <span class="pill2">Opcional</span>
+          <div class="price">15–25 €/mes</div>
+          <p>Pequeños cambios, soporte y actualizaciones.</p>
+          <div style="margin-top:.9rem;">
+            <button class="btn-outline" onclick="prefillPack('Mantenimiento')">Quiero info</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- =========================
+       PORTFOLIO / EJEMPLOS
+    ========================== -->
+    <section id="portfolio">
+      <h2 class="section-title reveal">Ejemplos</h2>
+      <p class="section-subtitle reveal delay-1">
+        Aquí puedes enlazar las webs reales que vayas haciendo. (Ahora te dejo placeholders.)
+      </p>
+
+      <div class="portfolio">
+        <div class="work reveal">
+          <div class="work-top">
+            <div class="work-name">Bar Bistrot</div>
+            <div class="work-chip">One-page</div>
+          </div>
+          <div class="work-body">
+            <p>Web clara con carta, galería, horarios y mapa.</p>
+            <div class="work-actions">
+              <!-- Cambia el href a tu URL real de GitHub Pages -->
+              <a class="btn-outline" href="#" target="_blank" rel="noopener">Ver web</a>
+              <a class="btn-outline" href="#" target="_blank" rel="noopener">Repo</a>
             </div>
           </div>
-          <div class="hero-card-bottom">
-            Ideal para bares sin web o con una web antigua que ya no usan.
+        </div>
+
+        <div class="work reveal delay-1">
+          <div class="work-top">
+            <div class="work-name">Tu próximo cliente</div>
+            <div class="work-chip">Restaurante</div>
+          </div>
+          <div class="work-body">
+            <p>Ejemplo para enseñar “antes/después” y cerrar ventas.</p>
+            <div class="work-actions">
+              <a class="btn-outline" href="#" target="_blank" rel="noopener">Ver demo</a>
+              <a class="btn-outline" href="#" target="_blank" rel="noopener">Repo</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="work reveal delay-2">
+          <div class="work-top">
+            <div class="work-name">Otro ejemplo</div>
+            <div class="work-chip">One-page</div>
+          </div>
+          <div class="work-body">
+            <p>Diseño rápido, móvil primero, CTA a llamada/WhatsApp.</p>
+            <div class="work-actions">
+              <a class="btn-outline" href="#" target="_blank" rel="noopener">Ver demo</a>
+              <a class="btn-outline" href="#" target="_blank" rel="noopener">Repo</a>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ========= SERVICIOS ========= -->
-    <section id="servicios">
-      <h2 class="section-title">Qué puedo hacer por tu bar</h2>
-      <p class="section-subtitle">
-        Trabajo con negocios pequeños que necesitan una web sencilla, sin complicaciones
-        técnicas, pero que funcione bien y que puedan enseñar a sus clientes desde el móvil.
-      </p>
-
-      <div class="grid-3">
-        <div class="card">
-          <h3>Web básica de una página</h3>
-          <span class="pill">Ideal para bares pequeños</span>
-          <p>
-            Una web clara donde se ve todo lo importante sin perderse:
-            tu bar, tu carta y cómo contactar.
-          </p>
-          <ul class="features">
-            <li>Portada con foto del local.</li>
-            <li>Sección “Sobre nosotros”.</li>
-            <li>Carta resumida + botón descarga PDF.</li>
-            <li>Mapa, horarios y contacto.</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <h3>Web completa para restaurante</h3>
-          <span class="pill">Más secciones, más contenido</span>
-          <p>
-            Para restaurantes que quieren explicar bien su propuesta
-            y enseñar una carta más amplia.
-          </p>
-          <ul class="features">
-            <li>Página de inicio + carta detallada.</li>
-            <li>Sección de menús del día / eventos.</li>
-            <li>Texto en español y opción de inglés.</li>
-            <li>Formulario de contacto o reserva sencilla.</li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <h3>Mantenimiento y cambios</h3>
-          <span class="pill">Me encargo de todo lo técnico</span>
-          <p>
-            Si no queréis preocuparos de servidores, dominios ni cambios, yo
-            me encargo de mantenerlo al día.
-          </p>
-          <ul class="features">
-            <li>Cambios en carta y horarios.</li>
-            <li>Actualización de fotos.</li>
-            <li>Hosting y dominio gestionados.</li>
-            <li>Soporte por WhatsApp / email.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========= PROCESO ========= -->
-    <section id="proceso">
-      <h2 class="section-title">Cómo trabajo</h2>
-      <p class="section-subtitle">
-        Intento que sea lo más sencillo posible para vosotros. Normalmente
-        seguimos estos pasos:
-      </p>
-
-      <div class="steps">
-        <div>
-          <div class="step-number">1. Hablamos</div>
-          <p>Me contáis qué necesitáis: tipo de bar, fotos que tenéis, carta, horarios…</p>
-        </div>
-        <div>
-          <div class="step-number">2. Me pasáis la carta y fotos</div>
-          <p>Puedo trabajar a partir de una foto de la carta, un PDF o un documento.</p>
-        </div>
-        <div>
-          <div class="step-number">3. Os enseño un primer diseño</div>
-          <p>En unos días os enseño cómo quedaría la web desde el móvil y el ordenador.</p>
-        </div>
-        <div>
-          <div class="step-number">4. Ajustes y publicación</div>
-          <p>Hacemos los cambios necesarios y, cuando esté OK, la publico y os explico cómo compartirla.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========= PRECIOS ========= -->
-    <section id="precios">
-      <h2 class="section-title">Packs y precios orientativos</h2>
-      <p class="section-subtitle">
-        Cada bar es distinto, pero estos son precios orientativos para que os hagáis una idea.
-        Siempre podemos ajustar la propuesta según lo que necesitéis.
-      </p>
-
-      <div class="grid-3">
-        <div class="card">
-          <h3>Pack Presencia Básica</h3>
-          <span class="pill">Web de una página</span>
-          <p class="price">Desde 250 €</p>
-          <ul class="features">
-            <li>One-page (inicio + sobre + carta resumida + contacto).</li>
-            <li>Botón para llamar y mapa.</li>
-            <li>Carta en PDF descargable.</li>
-          </ul>
-          <button class="btn-outline" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
-            Me interesa este pack
-          </button>
-        </div>
-
-        <div class="card">
-          <h3>Pack Restaurante Completo</h3>
-          <span class="pill">Web con secciones</span>
-          <p class="price">Desde 450 €</p>
-          <ul class="features">
-            <li>Inicio, carta, menús, eventos…</li>
-            <li>Versión en inglés (opcional).</li>
-            <li>Formulario de contacto.</li>
-          </ul>
-          <button class="btn-outline" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
-            Me interesa este pack
-          </button>
-        </div>
-
-        <div class="card">
-          <h3>Mantenimiento opcional</h3>
-          <span class="pill">Hosting + cambios</span>
-          <p class="price">15–25 €/mes</p>
-          <ul class="features">
-            <li>Hosting y parte técnica.</li>
-            <li>Cambios de carta y horarios.</li>
-            <li>Soporte por WhatsApp o email.</li>
-          </ul>
-          <button class="btn-outline" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
-            Quiero info de mantenimiento
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========= CONTACTO / FORMULARIO ========= -->
+    <!-- =========================
+       CONTACTO (form preparado para Formspree)
+    ========================== -->
     <section id="contacto">
-      <h2 class="section-title">Contacto</h2>
-      <p class="section-subtitle">
-        Si quieres que te prepare una propuesta para tu bar o restaurante, rellena este formulario
-        y te respondo lo antes posible. También puedes escribirme por WhatsApp o email directamente.
+      <h2 class="section-title reveal">Contacto</h2>
+      <p class="section-subtitle reveal delay-1">
+        Rellena esto y te respondo. Recomendado: formulario seguro con Formspree (sin “mailto”).
       </p>
 
       <div class="contact-grid">
-        <!-- FORMULARIO -->
-        <!--
-          IMPORTANTE: el form de abajo usa "mailto:" para abrir el programa de correo del cliente
-          y mandarte un mensaje a Marcoslopfer8@gmail.com.
+        <div class="card reveal">
+          <!--
+            IMPORTANTE:
+            1) Crea tu Formspree -> te dará una URL tipo: https://formspree.io/f/xxxxxx
+            2) Sustituye action="TU_URL_FORMSPREE"
+            3) Así no te saldrá “formulario no seguro” y el cliente NO necesita tener correo configurado.
+          -->
+          <form id="leadForm" action="https://formspree.io/f/xnjqkbdd" method="POST">
+            <div>
+              <label for="name">Nombre y local</label>
+              <input id="name" name="name" type="text" placeholder="Ej. Ana, Bar Río Verde" required />
+            </div>
 
-          Más adelante, si quieres algo más pro (sin depender del correo del cliente),
-          podríamos cambiar "action" por un servicio tipo Formspree o un backend propio.
-        -->
-        <div class="card">
-          <form
-            action="mailto:Marcoslopfer8@gmail.com"
-            method="post"
-            enctype="text/plain"
-          >
-            <label for="nombre">Nombre y nombre del local</label>
-            <input type="text" id="nombre" name="Nombre" placeholder="Ej. Ana, Bar Río Verde" required />
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="ejemplo@gmail.com" required />
+            </div>
 
-            <label for="email">Correo electrónico</label>
-            <input type="email" id="email" name="Email" placeholder="Ej. ejemplo@gmail.com" required />
+            <div>
+              <label for="phone">Teléfono</label>
+              <input id="phone" name="phone" type="tel" placeholder="600 000 000" />
+            </div>
 
-            <label for="telefono">Teléfono</label>
-            <input type="tel" id="telefono" name="Teléfono" placeholder="Ej. 600 000 000" />
+            <div>
+              <label for="pack">Pack</label>
+              <select id="pack" name="pack">
+                <option value="No sé">No estoy seguro</option>
+                <option value="Pack Presencia">Pack Presencia</option>
+                <option value="Pack Restaurante">Pack Restaurante</option>
+                <option value="Mantenimiento">Mantenimiento</option>
+              </select>
+            </div>
 
-            <label for="pack">Pack que te interesa</label>
-            <select id="pack" name="Pack">
-              <option value="no-sabe">No estoy seguro, quiero asesoramiento</option>
-              <option value="basica">Pack Presencia Básica (250 €)</option>
-              <option value="completa">Pack Restaurante Completo (450 €)</option>
-              <option value="mantenimiento">Solo mantenimiento / mejoras de web actual</option>
-            </select>
+            <div>
+              <label for="msg">Mensaje</label>
+              <textarea id="msg" name="message" placeholder="Cuéntame qué necesitas (carta, fotos, horarios...)"></textarea>
+            </div>
 
-            <label for="mensaje">Cuéntame un poco sobre tu bar</label>
-            <textarea id="mensaje" name="Mensaje" placeholder="Tipo de bar, barrio, si ya tienes carta en PDF o fotos..."></textarea>
+            <button class="btn" type="submit">Enviar</button>
 
-            <button type="submit" class="btn">
-              Enviar mensaje
-            </button>
+            <p class="note">
+              ⚠️ Si ves “no es seguro” es porque la web debe ir por <strong>HTTPS</strong> y el formulario no debe ser “mailto”.
+              Con GitHub Pages + Formspree queda bien.
+            </p>
           </form>
         </div>
 
-        <!-- INFORMACIÓN DE CONTACTO DIRECTA -->
-        <div class="contact-info">
-          <p><strong>Marcos López Fernández</strong></p>
-          <p>Diseño y desarrollo de webs para bares y restaurantes.</p>
-          <p>📧 <strong>Marcoslopfer8@gmail.com</strong></p>
+        <div class="card contact-card reveal delay-1">
+          <p><strong>TodosWebs</strong></p>
+          <p>Webs sencillas para bares y restaurantes.</p>
+          <p>📧 <strong>todoswebs@gmail.com</strong></p>
           <p>📞 <strong>683 46 44 20</strong></p>
+          <p class="note">
+            Consejo: añade también un botón de WhatsApp con tu número para responder rápido.
+          </p>
 
-          <p style="margin-top:0.8rem;">
-            Podemos empezar con algo sencillo y, si ves que te funciona,
-            ir ampliando la web con más fotos, secciones o idiomas.
-          </p>
-          <p>
-            También puedo ayudarte a revisar tu ficha de Google Maps
-            para que todo esté bien (dirección, horario, fotos…).
-          </p>
+          <div style="display:flex; gap:.7rem; flex-wrap:wrap; margin-top:.6rem;">
+            <a class="btn-outline" href="tel:+34683464420">Llamar</a>
+            <!-- Cambia el enlace a tu WhatsApp -->
+            <a class="btn-outline" href="https://wa.me/34683464420" target="_blank" rel="noopener">WhatsApp</a>
+          </div>
         </div>
       </div>
     </section>
-  </main>
+  </div>
 
-  <!-- ========= FOOTER ========= -->
+  <!-- =========================
+       FOOTER
+  ========================== -->
   <footer>
-    <div>© <span id="year"></span> Marcos López Fernández · Webs para bares y restaurantes</div>
-    <span>Precios orientativos. Pregunta por una propuesta ajustada a tu local.</span>
+    <div>© <span id="year"></span> TodosWebs · Hecho para negocios locales</div>
+    <div class="note">Publicada con GitHub Pages. Optimizada para móvil.</div>
   </footer>
 
-  <!-- ========= SCRIPT PEQUEÑO ========= -->
   <script>
-    // Año automático en el footer
+    // Año automático
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // =========================
+    // REVEAL ON SCROLL (IntersectionObserver)
+    // =========================
+    const els = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+    els.forEach(el => io.observe(el));
+
+    // =========================
+    // Prefill pack al pulsar botones "Me interesa"
+    // =========================
+    function prefillPack(packName){
+      const packSelect = document.getElementById('pack');
+      packSelect.value = packName;
+      document.getElementById('contacto').scrollIntoView({behavior:'smooth'});
+    }
+    window.prefillPack = prefillPack;
   </script>
 </body>
 </html>
