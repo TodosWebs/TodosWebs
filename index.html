@@ -1,871 +1,138 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <!-- =========================
-       META / SEO BÁSICO
-  ========================== -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TodosWebs | Webs para bares y restaurantes</title>
-  <meta name="description" content="TodosWebs: webs sencillas y profesionales para bares y restaurantes. Carta, fotos, horarios, contacto y mapa. Entrega rápida." />
-
-  <!-- (Opcional) Icono pestaña -->
-  <!-- <link rel="icon" href="favicon.png" /> -->
-
+  <meta charset="UTF-8">
+  <title>Nuestro juego 💛</title>
   <style>
-    /* =========================
-       PALETA (misma tonalidad, más juego)
-    ========================== */
-    :root{
-      --bg: #fbf6ef;
-      --bg2: #fffaf4;
-      --text: #2b2b2b;
-      --muted: #6c6c6c;
-
-      --primary: #c56a3a;
-      --primary2: #e18a5f;
-      --primaryDark: #9b4f2c;
-
-      --border: #eadac7;
-      --shadow: 0 14px 30px rgba(0,0,0,.10);
-      --shadow2: 0 10px 22px rgba(0,0,0,.08);
-
-      --radius: 18px;
-      --max: 1120px;
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #fff5f5;
+      padding: 40px;
     }
-
-    /* =========================
-       RESET
-    ========================== */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body{
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial;
-      background: radial-gradient(1200px 600px at 20% -10%, #ffe7cf 0%, transparent 60%),
-                  radial-gradient(900px 500px at 100% 10%, #ffd7c6 0%, transparent 55%),
-                  var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      scroll-behavior: smooth;
-    }
-    a{ color: inherit; text-decoration: none; }
-    img{ max-width: 100%; display: block; }
-    .container{ max-width: var(--max); margin: 0 auto; padding: 0 1.2rem; }
-
-    /* =========================
-       NAVBAR (más pro y limpia)
-    ========================== */
-    header{
-      position: sticky; top: 0; z-index: 50;
-      background: rgba(251,246,239,.82);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(234,218,199,.7);
-    }
-    .nav{
-      display: flex; align-items: center; justify-content: space-between;
-      padding: .9rem 0;
-      gap: 1rem;
-    }
-    .brand{
-      display:flex; flex-direction:column; gap: .1rem;
-    }
-    .brand-title{
-      font-weight: 800;
-      letter-spacing: .10em;
-      text-transform: uppercase;
-      font-size: .98rem;
-    }
-    .brand-sub{
-      font-size: .82rem;
-      color: var(--muted);
-    }
-
-    .nav-links{
-      display:flex; gap:.6rem; flex-wrap: wrap;
-      font-size: .92rem;
-    }
-    .nav-links a{
-      padding: .35rem .7rem;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      transition: background .18s ease, transform .18s ease, border-color .18s ease;
-    }
-    .nav-links a:hover{
-      background: rgba(197,106,58,.12);
-      border-color: rgba(197,106,58,.25);
-      transform: translateY(-1px);
-    }
-
-    .nav-cta{
-      display:flex; align-items:center; gap:.6rem;
-      font-size: .9rem;
-      white-space: nowrap;
-    }
-    .pill{
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.78);
-      border-radius: 999px;
-      padding: .3rem .7rem;
-      color: var(--muted);
-    }
-
-    /* =========================
-       BOTONES / MICROINTERACCIONES
-    ========================== */
-    .btn{
+    h1 { font-size: 2.5em; }
+    button {
+      padding: 12px 20px;
+      margin: 8px;
+      font-size: 15px;
       border: none;
-      border-radius: 999px;
-      padding: .55rem 1.05rem;
-      font-weight: 700;
+      border-radius: 10px;
       cursor: pointer;
-      display:inline-flex; align-items:center; gap:.45rem;
-      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
-      box-shadow: 0 10px 18px rgba(0,0,0,.16);
+      background-color: #ff7b7b;
       color: white;
-      background: linear-gradient(135deg, var(--primary), var(--primary2));
     }
-    .btn:hover{ transform: translateY(-1px); filter: brightness(1.03); }
-    .btn:active{ transform: translateY(0); box-shadow: 0 8px 14px rgba(0,0,0,.14); }
-
-    .btn-outline{
-      border-radius: 999px;
-      padding: .55rem 1.05rem;
-      background: rgba(255,255,255,.9);
-      border: 1px solid rgba(197,106,58,.55);
-      color: var(--primaryDark);
-      font-weight: 700;
-      cursor:pointer;
-      display:inline-flex; align-items:center; gap:.45rem;
-      transition: background .16s ease, transform .16s ease, box-shadow .16s ease;
-      box-shadow: 0 8px 14px rgba(0,0,0,.08);
+    #gameBox {
+      margin-top: 30px;
+      font-size: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: inline-block;
+      max-width: 500px;
     }
-    .btn-outline:hover{
-      background: rgba(197,106,58,.10);
-      transform: translateY(-1px);
-      box-shadow: 0 10px 18px rgba(0,0,0,.10);
-    }
-
-    /* =========================
-       HERO (más animado y con fondo distinto)
-    ========================== */
-    .hero-wrap{
-      padding: 2.2rem 0 1.4rem;
-    }
-    .hero{
-      border: 1px solid rgba(234,218,199,.85);
-      background: linear-gradient(180deg, rgba(255,250,244,.95), rgba(255,250,244,.72));
-      border-radius: 26px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
-    }
-    /* Fondo decorativo tipo “blob” */
-    .hero::before{
-      content:"";
-      position:absolute;
-      width: 520px; height: 520px;
-      right: -220px; top: -240px;
-      background: radial-gradient(circle at 35% 35%, rgba(225,138,95,.35), transparent 55%),
-                  radial-gradient(circle at 60% 70%, rgba(197,106,58,.25), transparent 58%);
-      filter: blur(2px);
-      transform: rotate(12deg);
-    }
-    .hero-grid{
-      position: relative;
-      display:grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-      gap: 2rem;
-      padding: 2.2rem;
-      align-items: center;
-    }
-
-    .badge{
-      display:inline-flex; align-items:center; gap:.5rem;
-      padding: .25rem .75rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,.92);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-size: .82rem;
-      width: fit-content;
-      margin-bottom: .85rem;
-    }
-    .dot{
-      width: 9px; height: 9px; border-radius: 50%;
-      background: #28a964;
-      box-shadow: 0 0 0 4px rgba(40,169,100,.12);
-    }
-
-    h1{
-      font-size: clamp(2rem, 4vw, 2.85rem);
-      line-height: 1.12;
-      margin-bottom: .7rem;
-    }
-    h1 span{ color: var(--primaryDark); }
-
-    .hero-p{
-      color: var(--muted);
-      font-size: 1rem;
-      max-width: 36rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .hero-actions{
-      display:flex; flex-wrap: wrap; gap:.75rem; align-items:center;
-      margin-top: .2rem;
-    }
-
-    .mini-info{
-      display:flex; flex-wrap: wrap; gap: .55rem;
-      margin-top: 1.1rem;
-    }
-    .chip{
-      background: rgba(255,255,255,.85);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: .28rem .65rem;
-      color: var(--muted);
-      font-size: .86rem;
-    }
-
-    /* Lado derecho: “mockup” con tarjeta que flota */
-    .mock{
-      position: relative;
-      min-height: 260px;
-    }
-    .mock-card{
-      position:absolute; inset:0;
-      border-radius: 22px;
-      background: linear-gradient(135deg, rgba(255,231,207,.9), rgba(242,180,140,.75));
-      border: 1px solid rgba(234,218,199,.8);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-      padding: 1.2rem;
-    }
-    .mock-card::before{
-      content:"";
-      position:absolute; inset:-40px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.55), transparent 45%),
-                  radial-gradient(circle at 70% 70%, rgba(255,255,255,.30), transparent 52%);
-      transform: rotate(-8deg);
-    }
-    .mock-inner{
-      position:relative;
-      background: rgba(255,255,255,.88);
-      border: 1px solid rgba(234,218,199,.8);
-      border-radius: 16px;
-      padding: 1rem;
-      backdrop-filter: blur(6px);
-    }
-    .mock-title{ font-weight: 800; margin-bottom: .25rem; }
-    .mock-sub{ color: var(--muted); font-size: .92rem; }
-    .mock-tags{
-      display:flex; flex-wrap: wrap; gap:.45rem;
-      margin-top: .7rem;
-      font-size: .82rem;
-    }
-    .tag{
-      padding: .2rem .55rem;
-      border-radius: 999px;
-      background: rgba(255,250,244,.9);
-      border: 1px solid rgba(234,218,199,.9);
-      color: var(--primaryDark);
-    }
-    .float-note{
-      position:absolute;
-      right: 18px; bottom: 18px;
-      background: rgba(255,255,255,.92);
-      border: 1px solid rgba(234,218,199,.9);
-      border-radius: 999px;
-      padding: .45rem .75rem;
-      font-size: .82rem;
-      color: var(--primaryDark);
-      box-shadow: 0 10px 18px rgba(0,0,0,.08);
-      animation: bob 3.8s ease-in-out infinite;
-    }
-    @keyframes bob{
-      0%,100%{ transform: translateY(0); }
-      50%{ transform: translateY(-6px); }
-    }
-
-    /* =========================
-       SECCIONES / CARDS
-    ========================== */
-    section{ padding: 2.6rem 0; }
-    .section-title{
-      font-size: 1.55rem;
-      margin-bottom: .35rem;
-    }
-    .section-subtitle{
-      color: var(--muted);
-      max-width: 44rem;
-      margin-bottom: 1.4rem;
-      font-size: .98rem;
-    }
-
-    .grid-3{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.2rem;
-    }
-
-    .card{
-      background: rgba(255,255,255,.92);
-      border: 1px solid rgba(234,218,199,.9);
-      border-radius: var(--radius);
-      padding: 1.25rem 1.25rem;
-      box-shadow: 0 10px 20px rgba(0,0,0,.06);
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .card:hover{
-      transform: translateY(-4px);
-      box-shadow: 0 18px 36px rgba(0,0,0,.10);
-    }
-    .card h3{ font-size: 1.05rem; margin-bottom: .5rem; }
-    .card p{ color: var(--muted); font-size: .93rem; }
-    .card ul{ margin: .7rem 0 0 1.1rem; color: var(--muted); font-size: .92rem; }
-    .card li{ margin-bottom: .25rem; }
-
-    .price{
-      font-size: 1.35rem;
-      font-weight: 900;
-      color: var(--primaryDark);
-      margin: .5rem 0 .6rem;
-    }
-    .pill2{
-      display:inline-block;
-      font-size: .78rem;
-      color: var(--muted);
-      border: 1px solid rgba(234,218,199,.95);
-      background: rgba(255,250,244,.9);
-      padding: .22rem .6rem;
-      border-radius: 999px;
-      margin-bottom: .5rem;
-    }
-
-    /* =========================
-       BANDA CON FONDO DISTINTO (sin imagen real)
-       Si quieres foto real: cambia background-image por url("tu-foto.jpg")
-    ========================== */
-    .band{
-      border-top: 1px solid rgba(234,218,199,.8);
-      border-bottom: 1px solid rgba(234,218,199,.8);
-      background:
-        linear-gradient(135deg, rgba(197,106,58,.18), rgba(225,138,95,.10)),
-        radial-gradient(800px 300px at 10% 20%, rgba(255,255,255,.8), transparent 65%),
-        radial-gradient(900px 420px at 90% 70%, rgba(255,255,255,.65), transparent 62%),
-        #fff7ef;
-      border-radius: 26px;
-      padding: 2.2rem;
-      box-shadow: var(--shadow2);
-    }
-    .band-grid{
-      display:grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-      gap: 1.6rem;
-      align-items: center;
-    }
-    .band h2{ font-size: 1.5rem; margin-bottom: .4rem; }
-    .band p{ color: var(--muted); }
-
-    /* =========================
-       PORTFOLIO (para enseñar webs reales)
-    ========================== */
-    .portfolio{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.1rem;
-    }
-    .work{
-      border-radius: 18px;
-      overflow:hidden;
-      border: 1px solid rgba(234,218,199,.9);
-      background: rgba(255,255,255,.9);
-      box-shadow: 0 10px 20px rgba(0,0,0,.06);
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .work:hover{
-      transform: translateY(-4px);
-      box-shadow: 0 18px 36px rgba(0,0,0,.10);
-    }
-    .work-top{
-      height: 150px;
-      background:
-        linear-gradient(135deg, rgba(197,106,58,.25), rgba(225,138,95,.18)),
-        radial-gradient(260px 140px at 20% 30%, rgba(255,255,255,.75), transparent 55%),
-        radial-gradient(300px 160px at 80% 70%, rgba(255,255,255,.60), transparent 58%);
-      display:flex; align-items:flex-end; justify-content: space-between;
-      padding: 1rem;
-    }
-    .work-name{
-      font-weight: 900;
-      color: #3a2a20;
-    }
-    .work-chip{
-      font-size: .78rem;
-      background: rgba(255,255,255,.85);
-      border: 1px solid rgba(234,218,199,.95);
-      border-radius: 999px;
-      padding: .22rem .6rem;
-      color: var(--primaryDark);
-    }
-    .work-body{ padding: 1rem; }
-    .work-body p{ color: var(--muted); font-size: .92rem; margin-top: .35rem; }
-    .work-actions{
-      display:flex; gap:.6rem; flex-wrap: wrap;
-      margin-top: .8rem;
-    }
-
-    /* =========================
-       CONTACTO / FORM
-    ========================== */
-    .contact-grid{
-      display:grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-      gap: 1.6rem;
-      align-items: start;
-    }
-    form{
-      display:flex; flex-direction: column; gap: .75rem;
-      font-size: .92rem;
-    }
-    label{ font-weight: 700; font-size: .84rem; color: #3a2a20; }
-    input, select, textarea{
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid rgba(234,218,199,.95);
-      padding: .6rem .75rem;
-      background: rgba(255,253,249,.95);
-      font-family: inherit;
-      font-size: .95rem;
-      outline: none;
-    }
-    input:focus, select:focus, textarea:focus{
-      border-color: rgba(197,106,58,.65);
-      box-shadow: 0 0 0 4px rgba(197,106,58,.12);
-    }
-    textarea{ min-height: 110px; resize: vertical; }
-
-    .note{
-      color: var(--muted);
-      font-size: .85rem;
-      margin-top: .6rem;
-    }
-    .contact-card p{ color: var(--muted); margin-bottom: .4rem; }
-    .contact-card strong{ color: var(--text); }
-
-    /* =========================
-       FOOTER
-    ========================== */
-    footer{
-      margin-top: 1.6rem;
-      border-top: 1px solid rgba(234,218,199,.85);
-      background: rgba(255,250,244,.85);
-      text-align:center;
-      padding: 1.4rem 1rem 2rem;
-      color: var(--muted);
-      font-size: .85rem;
-    }
-
-    /* =========================
-       REVEAL ANIMATIONS
-    ========================== */
-    .reveal{
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity .7s ease, transform .7s ease;
-    }
-    .reveal.visible{
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal.delay-1{ transition-delay: .08s; }
-    .reveal.delay-2{ transition-delay: .16s; }
-    .reveal.delay-3{ transition-delay: .24s; }
-
-    /* =========================
-       RESPONSIVE
-    ========================== */
-    @media (max-width: 920px){
-      .nav-links{ display:none; }
-      .hero-grid{ grid-template-columns: 1fr; }
-      .mock{ order: -1; min-height: 230px; }
-      .band-grid{ grid-template-columns: 1fr; }
-      .contact-grid{ grid-template-columns: 1fr; }
-    }
-    @media (max-width: 560px){
-      .hero-grid{ padding: 1.4rem; }
-      .band{ padding: 1.4rem; }
-      .pill{ display:none; }
-    }
+    .menu { margin-top: 20px; }
   </style>
 </head>
-
 <body>
-  <!-- =========================
-       HEADER / NAV
-  ========================== -->
-  <header>
-    <div class="container">
-      <div class="nav">
-        <!-- Marca -->
-        <div class="brand">
-          <div class="brand-title">TODOSWEBS</div>
-          <div class="brand-sub">Webs sencillas para bares y restaurantes</div>
-        </div>
 
-        <!-- Navegación -->
-        <nav class="nav-links" aria-label="Navegación">
-          <a href="#servicios">Servicios</a>
-          <a href="#precios">Precios</a>
-          <a href="#portfolio">Ejemplos</a>
-          <a href="#contacto">Contacto</a>
-        </nav>
+<h1>Nuestro juego 💛</h1>
 
-        <!-- CTA -->
-        <div class="nav-cta">
-          <div class="pill">📞 683 46 44 20</div>
-          <button class="btn-outline" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
-            Pide tu web
-          </button>
-        </div>
-      </div>
-    </div>
-  </header>
+<div class="menu">
+  <button onclick="showCategory('random')">🎲 Aleatorio</button>
+  <button onclick="showCategory('fun')">😂 Risa</button>
+  <button onclick="showCategory('paper')">✍️ Papel</button>
+  <button onclick="showCategory('challenges')">🎯 Retos</button>
+  <button onclick="showCategory('memory')">🧠 Recuerdos</button>
+  <button onclick="showCategory('soft')">❤️ Conexión</button>
+  <button onclick="showCategory('roleplay')">🎭 Roleplay</button>
+  <button onclick="showCategory('guess')">🧠 Adivinar</button>
+  <button onclick="showCategory('prefer')">🤔 Qué prefieres</button>
+  <button onclick="showCategory('spicy')">🔥 Picante</button>
+  <button onclick="showCategory('photo')">📸 Fotos</button>
+  <button onclick="openExternal('flags')">🏳️ Adivina bandera</button>
+  <button onclick="openExternal('higherlower')">📊 Higher or Lower</button>
+  <button onclick="dailyChallenge()">📅 Reto diario</button>
+</div>
 
-  <!-- =========================
-       HERO
-  ========================== -->
-  <div class="container hero-wrap">
-    <section class="hero reveal">
-      <div class="hero-grid">
-        <div>
-          <div class="badge">
-            <span class="dot"></span>
-            Entrega rápida · Ideal para negocios sin web
-          </div>
+<div id="gameBox">Elige un modo para empezar</div>
+<button onclick="nextGame()">➡️ Siguiente</button>
 
-          <h1>Tu bar en internet con una web <span>bonita, rápida</span> y lista para móvil</h1>
+<script>
 
-          <p class="hero-p">
-            En <strong>TodosWebs</strong> te creo una web clara con lo que realmente importa:
-            carta, fotos, horarios, mapa, botón de llamada y WhatsApp.
-          </p>
+const dailyChallengesList = [
+"Mañana graba pequeños momentos de tu día y haz un mini vídeo para enseñarlo por la noche",
+"Haz un collage de 6 fotos del color que elijas",
+"Mándame 3 fotos durante el día que te recuerden a mí",
+"Escríbeme un mensaje bonito inesperado en algún momento del día",
+"Haz una foto de algo que te haga sonreír hoy",
+"Piensa en 3 cosas que quieras hacer conmigo",
+"Graba un audio corto contándome tu mejor momento del día",
+"Haz una foto de un sitio donde te gustaría estar conmigo",
+"Escribe una frase sobre nosotros y mándamela en el momento menos esperado",
+"Haz algo pequeño que te recuerde a mí y cuéntamelo luego"
+];
 
-          <div class="hero-actions">
-            <button class="btn" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
-              Quiero presupuesto
-            </button>
-            <button class="btn-outline" onclick="document.getElementById('precios').scrollIntoView({behavior:'smooth'})">
-              Ver packs
-            </button>
-            <span class="note">Respuesta en menos de 24h</span>
-          </div>
+const gameCategories = {
 
-          <div class="mini-info">
-            <span class="chip">✅ Diseño profesional</span>
-            <span class="chip">✅ Carta + PDF</span>
-            <span class="chip">✅ Mapa y contacto</span>
-            <span class="chip">✅ Publicación online</span>
-          </div>
-        </div>
+fun: ["¿Qué preferiría yo: pizza o sushi?","¿Qué haría yo en un día libre perfecto?","¿Qué serie diría que es mi favorita?","¿Qué me da más pereza?","¿Qué hago que te parece gracioso?","Imítame durante 30 segundos","Di 2 verdades y 1 mentira","¿Qué diría yo ahora mismo?","¿Qué emoji uso más?","¿Qué comida odiaría comer ahora mismo?"],
 
-        <!-- Mockup a la derecha -->
-        <div class="mock reveal delay-1">
-          <div class="mock-card">
-            <div class="mock-inner">
-              <div class="mock-title">Lo que incluye tu web</div>
-              <div class="mock-sub">Secciones típicas para bar/restaurante</div>
-              <div class="mock-tags">
-                <span class="tag">Portada con foto</span>
-                <span class="tag">Carta online</span>
-                <span class="tag">Descarga PDF</span>
-                <span class="tag">Mapa Google</span>
-                <span class="tag">Botón llamar</span>
-              </div>
-            </div>
-            <div class="float-note">🚀 Lista para compartir por WhatsApp</div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+paper: ["Escribe 3 cosas que te gustan de mí","Dibuja nuestra primera cita","Escribe una palabra sobre nosotros","Dibuja algo que te recuerde a mí","Escribe algo que te haga reír de mí","Haz un mini mensaje bonito","Escribe un recuerdo feliz","Dibuja un momento gracioso","Escribe algo que quieras hacer conmigo","Haz un dibujo rápido de mí"],
 
-  <!-- =========================
-       SERVICIOS
-  ========================== -->
-  <div class="container">
-    <section id="servicios">
-      <h2 class="section-title reveal">Servicios</h2>
-      <p class="section-subtitle reveal delay-1">
-        Lo simple vende: una web rápida, bonita y fácil de entender. Sin complicaciones.
-      </p>
+challenges: ["Hazte una foto con algo rojo","Graba un audio imitándome","Busca algo que te recuerde a mí","Haz una cara triste","Haz una cara exagerada","Encuentra algo azul","Di 5 cosas que te gustan de mí en 10s","Canta una frase","Manda un audio random","Enséñame algo curioso de tu habitación"],
 
-      <div class="grid-3">
-        <article class="card reveal">
-          <h3>Web One-Page</h3>
-          <span class="pill2">Para bares sin web</span>
-          <p>Una sola página con lo esencial, perfecta para empezar.</p>
-          <ul>
-            <li>Inicio + sobre + carta + contacto</li>
-            <li>Botón de llamada y WhatsApp</li>
-            <li>Mapa y horarios</li>
-          </ul>
-        </article>
+memory: ["Nuestro momento más divertido","Nuestro plan más caótico","Un viaje que recuerdes","Una tontería que hicimos","Un momento inesperado","Algo que nos hizo reír mucho","Un recuerdo que te guste","Algo raro que nos pasó","Una cita que repetirías","Un momento simple pero bonito"],
 
-        <article class="card reveal delay-1">
-          <h3>Web Completa</h3>
-          <span class="pill2">Para restaurantes</span>
-          <p>Más secciones y carta organizada por categorías.</p>
-          <ul>
-            <li>Carta por secciones</li>
-            <li>Galería con fotos</li>
-            <li>Formulario (seguro) de contacto</li>
-          </ul>
-        </article>
+soft: ["Algo que admiro de ti","Un recuerdo feliz contigo","Qué me gusta de nosotros","Algo que valoro de ti","Qué me hace sentir bien contigo","Algo pequeño que me gusta","Un plan que quiero contigo","Algo que me gusta de tu forma de ser","Qué te hace especial para mí","Algo que me hace sonreír contigo"],
 
-        <article class="card reveal delay-2">
-          <h3>Mantenimiento</h3>
-          <span class="pill2">Tú no te preocupas</span>
-          <p>Actualizaciones de carta, horarios y soporte.</p>
-          <ul>
-            <li>Cambios mensuales</li>
-            <li>Hosting/tecnico (opcional)</li>
-            <li>Soporte rápido</li>
-          </ul>
-        </article>
-      </div>
-    </section>
+roleplay: ["Somos dos desconocidos ligando fatal","Somos una pareja famosa","Somos dos abuelos discutiendo","Primera cita incómoda","Nos reencontramos tras años","Discusión absurda por comida","Somos influencers","Somos compañeros de piso","Somos rivales","Somos actores en una peli"],
 
-    <!-- =========================
-         BANDA CON FONDO DISTINTO
-    ========================== -->
-    <section class="reveal">
-      <div class="band">
-        <div class="band-grid">
-          <div>
-            <h2>Haz que te encuentren y te llamen</h2>
-            <p>
-              Mucha gente busca “bar cerca” o el nombre del local y se va si no encuentra nada claro.
-              Con una web sencilla, tienes todo ordenado y profesional.
-            </p>
-          </div>
-          <div style="display:flex; gap:.7rem; flex-wrap:wrap; justify-content:flex-start;">
-            <button class="btn" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">
-              Empezar ahora
-            </button>
-            <button class="btn-outline" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">
-              Ver ejemplos
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+guess: ["Adivina qué estoy pensando","Adivina mi comida favorita","Adivina mi plan ideal","Adivina qué me apetece","Adivina mi serie favorita","Adivina qué haría ahora","Adivina qué me molesta","Adivina qué me hace feliz","Adivina qué elegiría","Adivina qué recuerdo diría"],
 
-    <!-- =========================
-       PRECIOS
-    ========================== -->
-    <section id="precios">
-      <h2 class="section-title reveal">Packs y precios</h2>
-      <p class="section-subtitle reveal delay-1">
-        Precios orientativos. Ajusto según carta, fotos, secciones e idioma.
-      </p>
+prefer: ["¿Preferirías viajar siempre o no viajar nunca?","¿Preferirías vivir juntos ya o esperar?","¿Preferirías peli o fiesta?","¿Preferirías montaña o playa?","¿Preferirías cenar fuera o cocinar juntos?","¿Preferirías madrugar o trasnochar?","¿Preferirías ahorrar o gastar en experiencias?","¿Preferirías ver series o hacer planes?","¿Preferirías vivir en ciudad o pueblo?","¿Preferirías una sorpresa o planear todo?"],
 
-      <div class="grid-3">
-        <article class="card reveal">
-          <h3>Pack Presencia</h3>
-          <span class="pill2">One-page</span>
-          <div class="price">Desde 250 €</div>
-          <p>Perfecta para bares que necesitan estar ya en internet.</p>
-          <div style="margin-top:.9rem;">
-            <button class="btn-outline" onclick="prefillPack('Pack Presencia')">Me interesa</button>
-          </div>
-        </article>
+spicy: ["¿Qué es lo que más te atrae de mí?","¿Cuál fue el momento en que más te gusté?","¿Qué detalle mío te parece más especial?","¿Qué te gusta que haga contigo?","¿Qué outfit mío te gusta más?","¿Qué plan te parecería más romántico?","¿Qué te gustaría que hiciéramos más juntos?","¿Qué te pone nervioso/a de mí?","¿Qué momento repetirías?","¿Qué te gusta de nuestra química?"],
 
-        <article class="card reveal delay-1">
-          <h3>Pack Restaurante</h3>
-          <span class="pill2">Más secciones</span>
-          <div class="price">Desde 450 €</div>
-          <p>Carta organizada, galería, y sección de menús/eventos.</p>
-          <div style="margin-top:.9rem;">
-            <button class="btn-outline" onclick="prefillPack('Pack Restaurante')">Me interesa</button>
-          </div>
-        </article>
+photo: ["Busca una foto donde salgamos juntos felices","Busca una foto graciosa","Busca una foto que te recuerde a mí","Busca una foto que te guste mucho","Busca una foto antigua tuya","Busca una foto que represente tu día","Busca una foto que te haga reír","Busca una foto que repetirías","Busca una foto de un sitio especial","Busca una foto random y explícamela"]
 
-        <article class="card reveal delay-2">
-          <h3>Mantenimiento</h3>
-          <span class="pill2">Opcional</span>
-          <div class="price">15–25 €/mes</div>
-          <p>Pequeños cambios, soporte y actualizaciones.</p>
-          <div style="margin-top:.9rem;">
-            <button class="btn-outline" onclick="prefillPack('Mantenimiento')">Quiero info</button>
-          </div>
-        </article>
-      </div>
-    </section>
+};
 
-    <!-- =========================
-       PORTFOLIO / EJEMPLOS
-    ========================== -->
-    <section id="portfolio">
-      <h2 class="section-title reveal">Ejemplos</h2>
-      <p class="section-subtitle reveal delay-1">
-        Aquí puedes enlazar las webs reales que vayas haciendo. (Ahora te dejo placeholders.)
-      </p>
+let currentCategory = [];
 
-      <div class="portfolio">
-        <div class="work reveal">
-          <div class="work-top">
-            <div class="work-name">Bar Bistrot</div>
-            <div class="work-chip">One-page</div>
-          </div>
-          <div class="work-body">
-            <p>Web clara con carta, galería, horarios y mapa.</p>
-            <div class="work-actions">
-              <!-- Cambia el href a tu URL real de GitHub Pages -->
-              <a class="btn-outline" href="#" target="_blank" rel="noopener">Ver web</a>
-              <a class="btn-outline" href="#" target="_blank" rel="noopener">Repo</a>
-            </div>
-          </div>
-        </div>
+function showCategory(cat) {
+  if (cat === 'random') {
+    currentCategory = Object.values(gameCategories).flat();
+  } else {
+    currentCategory = gameCategories[cat];
+  }
+  nextGame();
+}
 
-        <div class="work reveal delay-1">
-          <div class="work-top">
-            <div class="work-name">Tu próximo cliente</div>
-            <div class="work-chip">Restaurante</div>
-          </div>
-          <div class="work-body">
-            <p>Ejemplo para enseñar “antes/después” y cerrar ventas.</p>
-            <div class="work-actions">
-              <a class="btn-outline" href="#" target="_blank" rel="noopener">Ver demo</a>
-              <a class="btn-outline" href="#" target="_blank" rel="noopener">Repo</a>
-            </div>
-          </div>
-        </div>
+function nextGame() {
+  if (currentCategory.length === 0) {
+    document.getElementById("gameBox").innerText = "Elige un modo primero";
+    return;
+  }
+  const random = Math.floor(Math.random() * currentCategory.length);
+  document.getElementById("gameBox").innerText = currentCategory[random];
+}
 
-        <div class="work reveal delay-2">
-          <div class="work-top">
-            <div class="work-name">Otro ejemplo</div>
-            <div class="work-chip">One-page</div>
-          </div>
-          <div class="work-body">
-            <p>Diseño rápido, móvil primero, CTA a llamada/WhatsApp.</p>
-            <div class="work-actions">
-              <a class="btn-outline" href="#" target="_blank" rel="noopener">Ver demo</a>
-              <a class="btn-outline" href="#" target="_blank" rel="noopener">Repo</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+function openExternal(type) {
+  if (type === 'flags') {
+    window.open('https://worldle.teuteuf.fr/', '_blank');
+  }
+  if (type === 'higherlower') {
+    window.open('https://www.higherlowergame.com/', '_blank');
+  }
+}
 
-    <!-- =========================
-       CONTACTO (form preparado para Formspree)
-    ========================== -->
-    <section id="contacto">
-      <h2 class="section-title reveal">Contacto</h2>
-      <p class="section-subtitle reveal delay-1">
-        Rellena esto y te respondo. Recomendado: formulario seguro con Formspree (sin “mailto”).
-      </p>
+function dailyChallenge() {
+  const random = Math.floor(Math.random() * dailyChallengesList.length);
+  document.getElementById("gameBox").innerText = "📅 Reto diario:\n" + dailyChallengesList[random];
+}
 
-      <div class="contact-grid">
-        <div class="card reveal">
-          <!--
-            IMPORTANTE:
-            1) Crea tu Formspree -> te dará una URL tipo: https://formspree.io/f/xxxxxx
-            2) Sustituye action="TU_URL_FORMSPREE"
-            3) Así no te saldrá “formulario no seguro” y el cliente NO necesita tener correo configurado.
-          -->
-          <form id="leadForm" action="https://formspree.io/f/xnjqkbdd" method="POST">
-            <div>
-              <label for="name">Nombre y local</label>
-              <input id="name" name="name" type="text" placeholder="Ej. Ana, Bar Río Verde" required />
-            </div>
+</script>
 
-            <div>
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" placeholder="ejemplo@gmail.com" required />
-            </div>
-
-            <div>
-              <label for="phone">Teléfono</label>
-              <input id="phone" name="phone" type="tel" placeholder="600 000 000" />
-            </div>
-
-            <div>
-              <label for="pack">Pack</label>
-              <select id="pack" name="pack">
-                <option value="No sé">No estoy seguro</option>
-                <option value="Pack Presencia">Pack Presencia</option>
-                <option value="Pack Restaurante">Pack Restaurante</option>
-                <option value="Mantenimiento">Mantenimiento</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="msg">Mensaje</label>
-              <textarea id="msg" name="message" placeholder="Cuéntame qué necesitas (carta, fotos, horarios...)"></textarea>
-            </div>
-
-            <button class="btn" type="submit">Enviar</button>
-
-            <p class="note">
-              ⚠️ Si ves “no es seguro” es porque la web debe ir por <strong>HTTPS</strong> y el formulario no debe ser “mailto”.
-              Con GitHub Pages + Formspree queda bien.
-            </p>
-          </form>
-        </div>
-
-        <div class="card contact-card reveal delay-1">
-          <p><strong>TodosWebs</strong></p>
-          <p>Webs sencillas para bares y restaurantes.</p>
-          <p>📧 <strong>todoswebs@gmail.com</strong></p>
-          <p>📞 <strong>683 46 44 20</strong></p>
-          <p class="note">
-            Consejo: añade también un botón de WhatsApp con tu número para responder rápido.
-          </p>
-
-          <div style="display:flex; gap:.7rem; flex-wrap:wrap; margin-top:.6rem;">
-            <a class="btn-outline" href="tel:+34683464420">Llamar</a>
-            <!-- Cambia el enlace a tu WhatsApp -->
-            <a class="btn-outline" href="https://wa.me/34683464420" target="_blank" rel="noopener">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- =========================
-       FOOTER
-  ========================== -->
-  <footer>
-    <div>© <span id="year"></span> TodosWebs · Hecho para negocios locales</div>
-    <div class="note">Publicada con GitHub Pages. Optimizada para móvil.</div>
-  </footer>
-
-  <script>
-    // Año automático
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // =========================
-    // REVEAL ON SCROLL (IntersectionObserver)
-    // =========================
-    const els = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('visible');
-      });
-    }, { threshold: 0.15 });
-    els.forEach(el => io.observe(el));
-
-    // =========================
-    // Prefill pack al pulsar botones "Me interesa"
-    // =========================
-    function prefillPack(packName){
-      const packSelect = document.getElementById('pack');
-      packSelect.value = packName;
-      document.getElementById('contacto').scrollIntoView({behavior:'smooth'});
-    }
-    window.prefillPack = prefillPack;
-  </script>
 </body>
 </html>
+
