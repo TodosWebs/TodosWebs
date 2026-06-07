@@ -1,138 +1,1005 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Nuestro juego 💛</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #fff5f5;
-      padding: 40px;
-    }
-    h1 { font-size: 2.5em; }
-    button {
-      padding: 12px 20px;
-      margin: 8px;
-      font-size: 15px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      background-color: #ff7b7b;
-      color: white;
-    }
-    #gameBox {
-      margin-top: 30px;
-      font-size: 20px;
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      display: inline-block;
-      max-width: 500px;
-    }
-    .menu { margin-top: 20px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SportOS">
+<meta name="theme-color" content="#07090d">
+<title>SportOS · Marcos López</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07090d;--s1:#0d1117;--s2:#131920;--s3:#1a2230;--s4:#1f2a3a;
+  --border:#1e2a38;--border2:#2a3a4e;--text:#dde4f0;--muted:#4a5c72;--muted2:#6a7f99;
+  --padel:#00d4ff;--gym:#ff3d5a;--hyrox:#ff8c00;--bike:#a3ff6e;--bc:#c084fc;--swim:#38bdf8;--run:#ffb830;
+  --ai:#f0c060;
+  --safe-top:env(safe-area-inset-top);
+  --safe-bottom:env(safe-area-inset-bottom);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;min-height:100dvh;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.03) 3px,rgba(0,0,0,0.03) 4px);pointer-events:none;z-index:9999;}
+
+/* ── PWA INSTALL BANNER ── */
+.pwa-banner{background:linear-gradient(135deg,rgba(0,212,255,0.12),rgba(163,255,110,0.08));border:1px solid rgba(0,212,255,0.25);border-radius:14px;padding:14px 16px;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.pwa-banner .pwa-icon{font-size:28px;flex-shrink:0;}
+.pwa-banner .pwa-text{flex:1;}
+.pwa-banner .pwa-title{font-size:13px;font-weight:600;color:var(--padel);margin-bottom:3px;}
+.pwa-banner .pwa-steps{font-size:11px;color:var(--muted2);line-height:1.5;}
+.pwa-banner .pwa-close{width:24px;height:24px;border-radius:6px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:14px;flex-shrink:0;}
+
+/* ── LAYOUT ── */
+.app{display:grid;grid-template-columns:220px 1fr;min-height:100vh;min-height:100dvh;}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--s1);border-right:1px solid var(--border);padding:24px 0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;height:100dvh;overflow-y:auto;}
+.sidebar-logo{padding:0 20px 24px;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:5px;color:var(--muted2);}
+.logo em{color:var(--text);font-style:normal;}
+.logo-sub{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:2px;margin-top:4px;}
+.nav-section{padding:0 12px;margin-bottom:8px;}
+.nav-label{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:3px;text-transform:uppercase;padding:0 8px;margin-bottom:6px;}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;width:100%;border:none;background:transparent;color:var(--muted2);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.15s;text-align:left;}
+.nav-btn:hover{background:var(--s2);color:var(--text);}
+.nav-btn.active{background:var(--s3);color:var(--text);border:1px solid var(--border2);}
+.nav-icon{font-size:15px;width:20px;text-align:center;}
+.sidebar-bottom{margin-top:auto;padding:16px 12px 0;border-top:1px solid var(--border);}
+.profile-mini{display:flex;align-items:center;gap:10px;padding:10px;}
+.avatar-sm{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#0d2a3a,#143d52);border:1px solid rgba(0,212,255,0.2);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--padel);}
+.profile-mini-info .name{font-size:13px;font-weight:500;}
+.profile-mini-info .sub{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+
+/* ── MAIN ── */
+.main{padding:28px 32px;overflow-y:auto;}
+.view{display:none;}
+.view.active{display:block;}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:12px;flex-wrap:wrap;}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;}
+.page-sub{font-size:12px;color:var(--muted2);margin-top:3px;}
+.page-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ── CALENDAR ── */
+.cal-nav{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.cal-month{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;}
+.cal-arrow{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--s2);color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.15s;}
+.cal-arrow:hover{border-color:var(--border2);color:var(--text);}
+.cal-today-btn{font-family:'JetBrains Mono',monospace;font-size:10px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted2);cursor:pointer;letter-spacing:1px;transition:all 0.15s;}
+.cal-today-btn:hover{border-color:var(--padel);color:var(--padel);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:28px;}
+.cal-day-header{text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:2px;padding-bottom:8px;text-transform:uppercase;}
+.cal-cell{min-height:72px;background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:8px;cursor:pointer;transition:all 0.15s;position:relative;}
+.cal-cell:hover{border-color:var(--border2);transform:translateY(-1px);}
+.cal-cell.other-month{opacity:0.3;}
+.cal-cell.today{border-color:var(--padel);box-shadow:0 0 0 1px var(--padel);}
+.cal-cell.selected{border-color:var(--ai);box-shadow:0 0 0 1px var(--ai);}
+.cal-cell.has-session{background:var(--s2);}
+.cal-date{font-family:'Bebas Neue',sans-serif;font-size:16px;line-height:1;margin-bottom:4px;}
+.cal-cell.today .cal-date{color:var(--padel);}
+.cal-cell.selected .cal-date{color:var(--ai);}
+.cal-dots{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;}
+.cal-dot{width:6px;height:6px;border-radius:50%;}
+
+/* ── DAY DETAIL ── */
+.day-detail{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px;}
+.day-detail-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
+.day-detail-date{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;}
+.day-detail-sub{font-size:12px;color:var(--muted2);margin-top:2px;}
+.btn-add{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;border:1px solid var(--border2);background:var(--s2);color:var(--muted2);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.btn-add:hover{border-color:var(--ai);color:var(--ai);}
+.btn-add-primary{border-color:var(--padel);color:var(--padel);}
+.btn-add-primary:hover{background:rgba(0,212,255,0.08);}
+.sessions-list{display:flex;flex-direction:column;gap:10px;}
+.session-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;overflow:hidden;animation:fadeUp 0.25s ease both;}
+.session-card-header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);gap:8px;flex-wrap:wrap;}
+.session-card-title{display:flex;align-items:center;gap:8px;font-weight:500;font-size:14px;flex-wrap:wrap;}
+.session-sport-badge{font-family:'JetBrains Mono',monospace;font-size:9px;padding:3px 8px;border-radius:4px;border:1px solid;letter-spacing:1px;text-transform:uppercase;flex-shrink:0;}
+.session-card-actions{display:flex;gap:6px;align-items:center;}
+.icon-btn{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all 0.15s;}
+.icon-btn:hover{border-color:var(--border2);color:var(--text);}
+.icon-btn.danger:hover{border-color:var(--gym);color:var(--gym);}
+.session-card-body{padding:14px 16px;}
+.ex-table{width:100%;border-collapse:collapse;}
+.ex-table th{text-align:left;font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:2px;text-transform:uppercase;padding:0 8px 8px 0;border-bottom:1px solid var(--border);}
+.ex-table td{padding:8px 8px 8px 0;font-size:12px;border-bottom:1px solid rgba(30,42,56,0.5);vertical-align:middle;}
+.ex-table tr:last-child td{border-bottom:none;}
+.targets-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.target-pill{display:flex;align-items:center;gap:5px;padding:5px 10px;background:var(--s3);border:1px solid var(--border);border-radius:7px;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted2);}
+.target-pill strong{color:var(--text);}
+.tip-box{margin-top:12px;padding:10px 14px;background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.12);border-radius:8px;font-size:11px;color:var(--muted2);line-height:1.6;}
+.tip-box strong{color:var(--padel);}
+.empty-day{text-align:center;padding:40px 20px;color:var(--muted);}
+.empty-day .empty-icon{font-size:36px;margin-bottom:12px;}
+.empty-day p{font-size:13px;line-height:1.6;}
+.done-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:10px;font-family:'JetBrains Mono',monospace;border:1px solid;cursor:pointer;transition:all 0.15s;}
+.done-chip.pending{border-color:var(--border2);color:var(--muted);}
+.done-chip.pending:hover{border-color:var(--bike);color:var(--bike);}
+.done-chip.done{border-color:var(--bike);color:var(--bike);background:rgba(163,255,110,0.08);}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);z-index:1000;display:flex;align-items:flex-end;justify-content:center;padding:0;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--s1);border:1px solid var(--border2);border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:90vh;max-height:90dvh;overflow-y:auto;transform:translateY(40px);transition:transform 0.25s ease;padding-bottom:env(safe-area-inset-bottom);}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--s1);z-index:1;}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;}
+.modal-close{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.modal-close:hover{border-color:var(--gym);color:var(--gym);}
+.modal-body{padding:20px 24px;}
+.modal-tabs{display:flex;gap:4px;background:var(--s2);padding:4px;border-radius:10px;margin-bottom:20px;}
+.modal-tab{flex:1;padding:8px;text-align:center;font-size:12px;font-weight:500;border-radius:7px;cursor:pointer;transition:all 0.15s;color:var(--muted);border:none;background:transparent;}
+.modal-tab.active{background:var(--s3);color:var(--text);border:1px solid var(--border);}
+
+/* FORM */
+.form-group{margin-bottom:14px;}
+.form-label{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;display:block;}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--padel);}
+.form-textarea{resize:none;height:70px;line-height:1.5;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.exercises-editor{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.exercise-row{display:grid;grid-template-columns:1fr 72px 60px 68px 28px;gap:5px;align-items:center;}
+.exercise-row input{background:var(--s3);border:1px solid var(--border);border-radius:6px;padding:7px 8px;color:var(--text);font-size:12px;outline:none;width:100%;font-family:'DM Sans',sans-serif;}
+.exercise-row input:focus{border-color:var(--padel);}
+.ex-remove{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.15s;flex-shrink:0;}
+.ex-remove:hover{border-color:var(--gym);color:var(--gym);}
+.btn-add-ex{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;border:1px dashed var(--border2);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;transition:all 0.15s;width:100%;justify-content:center;}
+.btn-add-ex:hover{border-color:var(--padel);color:var(--padel);}
+
+/* AI */
+.ai-panel{background:var(--s2);border-radius:12px;padding:16px;margin-bottom:14px;}
+.ai-label{display:flex;align-items:center;gap:6px;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--ai);letter-spacing:2px;margin-bottom:10px;}
+.ai-dot{width:6px;height:6px;border-radius:50%;background:var(--ai);animation:blink 1.8s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.ai-textarea{width:100%;background:var(--s3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;resize:none;height:90px;line-height:1.5;transition:border-color 0.2s;}
+.ai-textarea:focus{border-color:var(--ai);}
+.ai-examples{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.ai-example{font-size:10px;padding:4px 10px;border-radius:6px;border:1px solid var(--border2);color:var(--muted2);cursor:pointer;transition:all 0.15s;background:transparent;font-family:'DM Sans',sans-serif;}
+.ai-example:hover{border-color:var(--ai);color:var(--ai);}
+.ai-result{background:var(--s3);border:1px solid var(--border);border-radius:10px;padding:14px;margin-top:12px;font-size:12px;line-height:1.7;color:var(--muted2);display:none;}
+.ai-result.show{display:block;}
+.ai-result strong{color:var(--text);}
+
+.btn-primary{width:100%;padding:12px;background:var(--padel);color:var(--bg);border:none;border-radius:10px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;cursor:pointer;transition:all 0.2s;margin-top:4px;}
+.btn-primary:hover{background:#33daff;box-shadow:0 4px 20px rgba(0,212,255,0.25);}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;}
+.btn-ai{background:var(--ai);color:#0a1a0a;}
+.btn-ai:hover{background:#f5d070;box-shadow:0 4px 20px rgba(240,192,96,0.25);}
+.btn-week{background:linear-gradient(135deg,var(--ai),#e0a030);color:#0a1a0a;}
+.btn-week:hover{box-shadow:0 4px 20px rgba(240,192,96,0.3);}
+
+/* WEEK PLAN RESULTS */
+.week-plan-grid{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+.week-plan-day{background:var(--s3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+.week-plan-day-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.week-plan-day-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;}
+.week-plan-day-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);}
+.week-plan-sessions{display:flex;flex-direction:column;gap:4px;}
+.week-plan-session{font-size:12px;color:var(--muted2);display:flex;align-items:center;gap:6px;}
+.week-plan-session strong{color:var(--text);}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+.stat-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;}
+.stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--sport-color,var(--padel));}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;color:var(--sport-color,var(--padel));}
+.stat-val sub{font-size:16px;color:var(--muted2);font-family:'DM Sans',sans-serif;}
+.stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.stat-trend{position:absolute;top:16px;right:16px;font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--bike);}
+.week-summary-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;}
+.week-bar{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.week-bar-sport{font-size:12px;width:90px;color:var(--muted2);flex-shrink:0;}
+.week-bar-track{flex:1;height:5px;background:var(--s3);border-radius:4px;overflow:hidden;}
+.week-bar-fill{height:100%;border-radius:4px;transition:width 0.8s ease;}
+.week-bar-val{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);width:60px;text-align:right;flex-shrink:0;}
+
+/* PROFILE */
+.profile-hero{display:grid;grid-template-columns:80px 1fr auto;gap:24px;align-items:center;background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:28px 32px;margin-bottom:24px;position:relative;overflow:hidden;}
+.profile-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:250px;height:250px;background:radial-gradient(circle,rgba(0,212,255,0.07) 0%,transparent 70%);}
+.profile-avatar{width:80px;height:80px;border-radius:18px;background:linear-gradient(135deg,#0d2a3a,#143d52);border:2px solid rgba(0,212,255,0.25);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--padel);flex-shrink:0;}
+.profile-name-big{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:4px;line-height:1;}
+.profile-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.profile-tag{font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);color:var(--muted2);}
+.bio-stats{display:flex;gap:24px;}
+.bio-stat .v{font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1;}
+.bio-stat .v sub{font-size:14px;color:var(--muted2);font-family:'DM Sans',sans-serif;}
+.bio-stat .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;font-family:'JetBrains Mono',monospace;}
+.section-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px;}
+.section-card-title{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.section-card-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.imc-bar{height:8px;background:linear-gradient(90deg,#4dd0e1,#a3ff6e,#ffb830,#ff4d6d);border-radius:4px;position:relative;margin:10px 0 6px;}
+.imc-needle{position:absolute;top:-4px;width:4px;height:16px;background:white;border-radius:2px;transform:translateX(-50%);box-shadow:0 0 8px rgba(255,255,255,0.8);}
+.imc-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+.rings-display{display:flex;gap:24px;align-items:center;justify-content:center;padding:8px 0;}
+.ring-item{text-align:center;}
+.ring-svg{transform:rotate(-90deg);}
+.ring-label{font-size:10px;color:var(--muted);margin-top:6px;text-transform:uppercase;letter-spacing:1px;}
+.benchmark-row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--border);}
+.benchmark-row:last-child{border-bottom:none;}
+.benchmark-label{font-size:12px;color:var(--muted2);}
+.benchmark-val{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);text-align:right;}
+.benchmark-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+
+/* LOADING */
+.loading-dots{display:inline-flex;gap:4px;align-items:center;}
+.loading-dots span{width:5px;height:5px;border-radius:50%;background:currentColor;animation:dot 1.2s ease-in-out infinite;}
+.loading-dots span:nth-child(2){animation-delay:0.2s;}
+.loading-dots span:nth-child(3){animation-delay:0.4s;}
+@keyframes dot{0%,60%,100%{transform:scale(0.8);opacity:0.4}30%{transform:scale(1);opacity:1}}
+
+/* TOAST */
+.toast{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));right:24px;background:var(--bike);color:#0a1a0a;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;transform:translateY(60px);opacity:0;transition:all 0.3s;z-index:9998;pointer-events:none;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.error{background:var(--gym);color:white;}
+
+/* MOBILE NAV */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--border);padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:100;}
+.mobile-nav-inner{display:flex;justify-content:space-around;}
+.mobile-nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 16px;background:none;border:none;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:10px;transition:all 0.15s;}
+.mobile-nav-btn.active{color:var(--padel);}
+.mobile-nav-btn .mn-icon{font-size:20px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:760px){
+  .app{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .main{padding:16px 16px calc(80px + env(safe-area-inset-bottom));padding-top:calc(16px + env(safe-area-inset-top));}
+  .mobile-nav{display:block;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .profile-hero{grid-template-columns:60px 1fr;gap:14px;}
+  .bio-stats{display:none;}
+  .form-row{grid-template-columns:1fr;}
+  .exercise-row{grid-template-columns:1fr 60px 50px 60px 28px;}
+  .cal-grid{gap:3px;}
+  .cal-cell{min-height:56px;padding:5px;}
+  .cal-date{font-size:13px;}
+}
+</style>
 </head>
 <body>
+<div class="app">
 
-<h1>Nuestro juego 💛</h1>
+<!-- SIDEBAR (desktop) -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo">SPORT<em>OS</em></div>
+    <div class="logo-sub">v2 · Marcos López</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Training</div>
+    <button class="nav-btn active" onclick="showView('calendar')"><span class="nav-icon">📅</span>Calendario</button>
+    <button class="nav-btn" onclick="showView('stats')"><span class="nav-icon">📊</span>Estadísticas</button>
+  </div>
+  <div class="nav-section" style="margin-top:8px">
+    <div class="nav-label">Perfil</div>
+    <button class="nav-btn" onclick="showView('profile')"><span class="nav-icon">👤</span>Mi perfil</button>
+  </div>
+  <div class="sidebar-bottom">
+    <div class="profile-mini">
+      <div class="avatar-sm">ML</div>
+      <div class="profile-mini-info">
+        <div class="name">Marcos López</div>
+        <div class="sub">63,3 kg · 11,9% fat</div>
+      </div>
+    </div>
+  </div>
+</aside>
 
-<div class="menu">
-  <button onclick="showCategory('random')">🎲 Aleatorio</button>
-  <button onclick="showCategory('fun')">😂 Risa</button>
-  <button onclick="showCategory('paper')">✍️ Papel</button>
-  <button onclick="showCategory('challenges')">🎯 Retos</button>
-  <button onclick="showCategory('memory')">🧠 Recuerdos</button>
-  <button onclick="showCategory('soft')">❤️ Conexión</button>
-  <button onclick="showCategory('roleplay')">🎭 Roleplay</button>
-  <button onclick="showCategory('guess')">🧠 Adivinar</button>
-  <button onclick="showCategory('prefer')">🤔 Qué prefieres</button>
-  <button onclick="showCategory('spicy')">🔥 Picante</button>
-  <button onclick="showCategory('photo')">📸 Fotos</button>
-  <button onclick="openExternal('flags')">🏳️ Adivina bandera</button>
-  <button onclick="openExternal('higherlower')">📊 Higher or Lower</button>
-  <button onclick="dailyChallenge()">📅 Reto diario</button>
+<!-- MAIN -->
+<main class="main">
+
+  <!-- CALENDAR VIEW -->
+  <div class="view active" id="view-calendar">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Calendario</div>
+        <div class="page-sub">Toca un día para ver o añadir entrenamientos</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn-add" onclick="openWeekPlanModal()">🗓 Planning IA semanal</button>
+        <button class="btn-add btn-add-primary" onclick="openAddModal()">+ Nueva sesión</button>
+      </div>
+    </div>
+    <div class="cal-nav">
+      <button class="cal-arrow" onclick="changeMonth(-1)">‹</button>
+      <div class="cal-month" id="calMonth"></div>
+      <button class="cal-arrow" onclick="changeMonth(1)">›</button>
+      <button class="cal-today-btn" onclick="goToday()">HOY</button>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="day-detail" id="dayDetail" style="display:none">
+      <div class="day-detail-header">
+        <div>
+          <div class="day-detail-date" id="dayDetailTitle"></div>
+          <div class="day-detail-sub" id="dayDetailSub"></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-add" onclick="openAIModal()">✨ IA sesión</button>
+          <button class="btn-add btn-add-primary" onclick="openAddModal()">+ Manual</button>
+        </div>
+      </div>
+      <div class="sessions-list" id="sessionsList"></div>
+    </div>
+  </div>
+
+  <!-- STATS VIEW -->
+  <div class="view" id="view-stats">
+    <div class="page-header"><div><div class="page-title">Estadísticas</div><div class="page-sub">Resumen de tu actividad registrada</div></div></div>
+    <div class="stats-grid" id="statsGrid"></div>
+    <div class="week-summary-card">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:var(--muted);margin-bottom:16px">VOLUMEN POR DEPORTE</div>
+      <div id="sportBars"></div>
+    </div>
+  </div>
+
+  <!-- PROFILE VIEW -->
+  <div class="view" id="view-profile">
+    <div class="page-header"><div><div class="page-title">Mi Perfil</div><div class="page-sub">Datos corporales, benchmarks y anillos</div></div></div>
+    <div id="profileContent"></div>
+  </div>
+
+</main>
 </div>
 
-<div id="gameBox">Elige un modo para empezar</div>
-<button onclick="nextGame()">➡️ Siguiente</button>
+<!-- MOBILE NAV -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mobile-nav-btn active" onclick="showView('calendar')"><span class="mn-icon">📅</span>Calendario</button>
+    <button class="mobile-nav-btn" onclick="showView('stats')"><span class="mn-icon">📊</span>Stats</button>
+    <button class="mobile-nav-btn" onclick="showView('profile')"><span class="mn-icon">👤</span>Perfil</button>
+  </div>
+</nav>
+
+<!-- ADD SESSION MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">NUEVA SESIÓN</div>
+      <button class="modal-close" onclick="closeModal('addModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-tabs">
+        <button class="modal-tab active" onclick="switchModalTab('manual')">✏️ Manual</button>
+        <button class="modal-tab" onclick="switchModalTab('ai')">✨ IA sesión</button>
+      </div>
+      <!-- MANUAL -->
+      <div id="tab-manual">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Deporte</label>
+            <select class="form-select" id="f-sport" onchange="updateSportFields()">
+              <option value="gym">🏋️ Gimnasio</option>
+              <option value="hyrox">⚡ Hyrox</option>
+              <option value="padel">🎾 Pádel</option>
+              <option value="bike">🚴 Bici outdoor</option>
+              <option value="run">🏃 Running</option>
+              <option value="bc">🎵 Body Combat</option>
+              <option value="swim">🏊 Natación</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fecha</label>
+            <input type="date" class="form-input" id="f-date">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Hora</label>
+            <input type="time" class="form-input" id="f-time">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Duración (min)</label>
+            <input type="number" class="form-input" id="f-duration" placeholder="60">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Título / tipo de sesión</label>
+          <input type="text" class="form-input" id="f-title" placeholder="Ej: Tren superior, Partido amistoso, Rodada Z2...">
+        </div>
+        <!-- GYM/HYROX -->
+        <div id="exercises-section">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <label class="form-label" style="margin:0">Ejercicios</label>
+            <div style="display:grid;grid-template-columns:1fr 72px 60px 68px 28px;gap:5px;width:calc(100% - 90px);font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:1px;text-align:center">
+              <span style="text-align:left">EJERCICIO</span><span>SER×REPS</span><span>PESO</span><span>DESC</span><span></span>
+            </div>
+          </div>
+          <div class="exercises-editor" id="exercisesEditor"></div>
+          <button class="btn-add-ex" onclick="addExerciseRow()">+ Añadir ejercicio</button>
+        </div>
+        <!-- BIKE / RUN -->
+        <div id="endurance-section" style="display:none">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Distancia objetivo (km)</label>
+              <input type="number" class="form-input" id="f-distance" placeholder="25" step="0.5">
+            </div>
+            <div class="form-group">
+              <label class="form-label" id="speed-label">Velocidad / Ritmo objetivo</label>
+              <input type="text" class="form-input" id="f-speed" placeholder="24.6 km/h ó 5'30&quot;/km">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">FC objetivo (lpm)</label>
+              <input type="number" class="form-input" id="f-hr" placeholder="150">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Zona</label>
+              <select class="form-select" id="f-zone">
+                <option value="Z1">Z1 — Recuperación</option>
+                <option value="Z2" selected>Z2 — Aeróbico base</option>
+                <option value="Z3">Z3 — Umbral</option>
+                <option value="Z4">Z4 — Alta intensidad</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <!-- PADEL/BC/SWIM -->
+        <div id="cardio-section" style="display:none">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">FC media esperada</label>
+              <input type="number" class="form-input" id="f-cardio-hr" placeholder="140">
+            </div>
+            <div class="form-group">
+              <label class="form-label">RPE esperado (1-10)</label>
+              <input type="number" class="form-input" id="f-cardio-rpe" placeholder="7" min="1" max="10">
+            </div>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:4px">
+          <label class="form-label">Notas / objetivos</label>
+          <textarea class="form-textarea" id="f-notes" placeholder="Indicaciones, objetivos, contexto..."></textarea>
+        </div>
+        <button class="btn-primary" onclick="saveSession()">GUARDAR SESIÓN</button>
+      </div>
+      <!-- AI SINGLE SESSION -->
+      <div id="tab-ai" style="display:none">
+        <div class="ai-panel">
+          <div class="ai-label"><div class="ai-dot"></div>IA — SESIÓN INDIVIDUAL</div>
+          <textarea class="ai-textarea" id="aiPrompt" placeholder="Ej: Gym tren superior 45 min para mañana miércoles, antes del trabajo..."></textarea>
+          <div class="ai-examples">
+            <button class="ai-example" onclick="setAIExample(this)">Gym tren superior 45'</button>
+            <button class="ai-example" onclick="setAIExample(this)">Bici zona 2, 50 minutos</button>
+            <button class="ai-example" onclick="setAIExample(this)">Hyrox circuito completo</button>
+            <button class="ai-example" onclick="setAIExample(this)">Tren inferior sin fallo (pádel por la noche)</button>
+            <button class="ai-example" onclick="setAIExample(this)">Bici ritmo alto viernes tarde</button>
+            <button class="ai-example" onclick="setAIExample(this)">Running suave 5km recuperación</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Fecha</label><input type="date" class="form-input" id="ai-date"></div>
+          <div class="form-group"><label class="form-label">Hora</label><input type="time" class="form-input" id="ai-time"></div>
+        </div>
+        <div class="ai-result" id="aiResult"></div>
+        <button class="btn-primary btn-ai" id="btnGenerate" onclick="generateWithAI()">✨ GENERAR ENTRENAMIENTO</button>
+        <button class="btn-primary" id="btnSaveAI" style="display:none;margin-top:8px" onclick="saveAISession()">GUARDAR EN CALENDARIO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WEEK PLAN MODAL -->
+<div class="modal-overlay" id="weekModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" style="color:var(--ai)">🗓 PLANNING IA SEMANAL</div>
+      <button class="modal-close" onclick="closeModal('weekModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="ai-panel">
+        <div class="ai-label"><div class="ai-dot"></div>CUÉNTAME TU SEMANA</div>
+        <textarea class="ai-textarea" id="weekPrompt" style="height:110px" placeholder="Ej: Esta semana tengo oficina martes, miércoles y viernes. El martes Hyrox a las 16h y pádel a las 21h. El jueves también pádel por la noche. El sábado graduación y fiesta. Quiero meter 3 días de gym, 2 de bici y que el domingo sea muy suave..."></textarea>
+        <div class="ai-examples" style="margin-top:8px">
+          <button class="ai-example" onclick="setWeekExample(this)">Semana normal con 3 gym + 2 bici</button>
+          <button class="ai-example" onclick="setWeekExample(this)">Semana de carga alta, máximo volumen</button>
+          <button class="ai-example" onclick="setWeekExample(this)">Semana de descarga, solo mantener</button>
+          <button class="ai-example" onclick="setWeekExample(this)">Lunes libre, martes Hyrox 16h + pádel 21h, sábado descanso</button>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Semana del (lunes)</label>
+          <input type="date" class="form-input" id="week-start">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nivel de carga</label>
+          <select class="form-select" id="week-load">
+            <option value="normal">Normal — equilibrado</option>
+            <option value="alta">Alta — máximo volumen</option>
+            <option value="descarga">Descarga — mantenimiento</option>
+          </select>
+        </div>
+      </div>
+      <div class="ai-result" id="weekResult"></div>
+      <button class="btn-primary btn-week" id="btnGenWeek" onclick="generateWeekPlan()">🗓 GENERAR PLANNING SEMANAL</button>
+      <button class="btn-primary" id="btnSaveWeek" style="display:none;margin-top:8px" onclick="saveWeekPlan()">GUARDAR TODO EN CALENDARIO</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script>
+// ── STORAGE ──
+const STORE_KEY='sportos_v2';
+function load(){try{return JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch{return{}}}
+function save(d){localStorage.setItem(STORE_KEY,JSON.stringify(d))}
+let DB=load();
+if(!DB.sessions) DB.sessions={};
 
-const dailyChallengesList = [
-"Mañana graba pequeños momentos de tu día y haz un mini vídeo para enseñarlo por la noche",
-"Haz un collage de 6 fotos del color que elijas",
-"Mándame 3 fotos durante el día que te recuerden a mí",
-"Escríbeme un mensaje bonito inesperado en algún momento del día",
-"Haz una foto de algo que te haga sonreír hoy",
-"Piensa en 3 cosas que quieras hacer conmigo",
-"Graba un audio corto contándome tu mejor momento del día",
-"Haz una foto de un sitio donde te gustaría estar conmigo",
-"Escribe una frase sobre nosotros y mándamela en el momento menos esperado",
-"Haz algo pequeño que te recuerde a mí y cuéntamelo luego"
-];
+// ── SEED ──
+function seedIfEmpty(){
+  const seeds=[
+    {id:'s1',date:'2026-05-27',sport:'hyrox',title:'Hyrox — Circuito completo',time:'16:00',duration:70,exercises:[{name:'Ski Erg',sets:'1',reps:'1000m',weight:'',rest:'post-run'},{name:'Carrera transición',sets:'4',reps:'1km',weight:'',rest:'—'},{name:'Sled Push',sets:'1',reps:'50m',weight:'carga media',rest:'post-run'},{name:'Burpees Broad Jump',sets:'1',reps:'50 reps',weight:'',rest:'post-run'},{name:'Rowing Ergómetro',sets:'1',reps:'1000m',weight:'',rest:'post-run'}],targets:'FC<180 · Ritmo 6\'00"-6\'20"/km · RPE 8-9',notes:'Tienes pádel a las 21h. No des todo al final — reserva para el partido.',done:false},
+    {id:'s2',date:'2026-05-27',sport:'padel',title:'Pádel — Partido',time:'21:00',duration:60,exercises:[],targets:'FC ~135-145 · Juego táctico',notes:'Llegas cargado del Hyrox. Juega posicional.',done:false},
+    {id:'s3',date:'2026-05-28',sport:'gym',title:'Tren superior',time:'08:00',duration:45,exercises:[{name:'Press banca',sets:'4',reps:'8',weight:'—',rest:'90"'},{name:'Remo con barra',sets:'4',reps:'8',weight:'—',rest:'90"'},{name:'Press militar',sets:'3',reps:'10',weight:'—',rest:'75"'},{name:'Jalón en polea',sets:'3',reps:'10',weight:'—',rest:'75"'},{name:'Curl bíceps barra',sets:'3',reps:'12',weight:'—',rest:'60"'},{name:'Tríceps en polea',sets:'3',reps:'12',weight:'—',rest:'60"'}],targets:'FC ~120-135 · RPE 7-8',notes:'Gym antes de la bici de tarde.',done:false},
+    {id:'s4',date:'2026-05-28',sport:'bike',title:'Bici outdoor — Zona 2',time:'18:00',duration:50,exercises:[],distance:21,speed:'22-24 km/h',hr:140,zone:'Z2',targets:'20-22 km · 22-24 km/h · FC 130-145',notes:'Vienes del gym. Mantén zona 2 real.',done:false},
+    {id:'s5',date:'2026-05-29',sport:'gym',title:'Tren inferior',time:'08:00',duration:45,exercises:[{name:'Sentadilla libre',sets:'4',reps:'8',weight:'—',rest:'90"'},{name:'Peso muerto rumano',sets:'4',reps:'8',weight:'—',rest:'90"'},{name:'Prensa',sets:'3',reps:'10',weight:'—',rest:'75"'},{name:'Zancadas caminando',sets:'3',reps:'10/pierna',weight:'—',rest:'75"'},{name:'Gemelos de pie',sets:'4',reps:'15',weight:'—',rest:'60"'},{name:'Plancha',sets:'3',reps:'45"',weight:'—',rest:'45"'}],targets:'FC ~125-138 · NO fallar al fallo — pádel por la noche',notes:'Deja 1-2 reps en el depósito en todos los ejercicios de pierna.',done:false},
+    {id:'s6',date:'2026-05-29',sport:'padel',title:'Pádel — Partido',time:'20:00',duration:60,exercises:[],targets:'FC ~135-145',notes:'Piernas cargadas del gym. Juego posicional.',done:false},
+    {id:'s7',date:'2026-05-30',sport:'gym',title:'Full body accesorios',time:'08:00',duration:40,exercises:[{name:'Dominadas',sets:'4',reps:'máx',weight:'—',rest:'90"'},{name:'Fondos en paralelas',sets:'3',reps:'10',weight:'—',rest:'75"'},{name:'Face pulls',sets:'3',reps:'15',weight:'—',rest:'60"'},{name:'Hip thrust',sets:'3',reps:'12',weight:'—',rest:'75"'},{name:'Ab rueda (rollout)',sets:'3',reps:'10',weight:'—',rest:'60"'},{name:'Farmer carry',sets:'3',reps:'20m',weight:'pesado',rest:'60"'}],targets:'FC ~115-130 · RPE 6-7',notes:'Sesión complementaria antes de la bici fuerte.',done:false},
+    {id:'s8',date:'2026-05-30',sport:'bike',title:'Bici outdoor — Ritmo alto',time:'18:00',duration:60,exercises:[],distance:26,speed:'25-27 km/h',hr:155,zone:'Z3-4',targets:'25-28 km · ~25-27 km/h · FC 150-158',notes:'Referencia: 30km a 24.6km/h FC154. Último esfuerzo de la semana.',done:false},
+    {id:'s9',date:'2026-06-01',sport:'bike',title:'Bici suave — Recuperación',time:'09:00',duration:40,exercises:[],distance:12,speed:'<20 km/h',hr:115,zone:'Z1',targets:'10-15 km · FC <120',notes:'Post-graduación/fiesta. Si te encuentras mal, un paseo también vale.',done:false},
+  ];
+  seeds.forEach(s=>{if(!DB.sessions[s.id]) DB.sessions[s.id]=s;});
+  save(DB);
+}
+seedIfEmpty();
 
-const gameCategories = {
-
-fun: ["¿Qué preferiría yo: pizza o sushi?","¿Qué haría yo en un día libre perfecto?","¿Qué serie diría que es mi favorita?","¿Qué me da más pereza?","¿Qué hago que te parece gracioso?","Imítame durante 30 segundos","Di 2 verdades y 1 mentira","¿Qué diría yo ahora mismo?","¿Qué emoji uso más?","¿Qué comida odiaría comer ahora mismo?"],
-
-paper: ["Escribe 3 cosas que te gustan de mí","Dibuja nuestra primera cita","Escribe una palabra sobre nosotros","Dibuja algo que te recuerde a mí","Escribe algo que te haga reír de mí","Haz un mini mensaje bonito","Escribe un recuerdo feliz","Dibuja un momento gracioso","Escribe algo que quieras hacer conmigo","Haz un dibujo rápido de mí"],
-
-challenges: ["Hazte una foto con algo rojo","Graba un audio imitándome","Busca algo que te recuerde a mí","Haz una cara triste","Haz una cara exagerada","Encuentra algo azul","Di 5 cosas que te gustan de mí en 10s","Canta una frase","Manda un audio random","Enséñame algo curioso de tu habitación"],
-
-memory: ["Nuestro momento más divertido","Nuestro plan más caótico","Un viaje que recuerdes","Una tontería que hicimos","Un momento inesperado","Algo que nos hizo reír mucho","Un recuerdo que te guste","Algo raro que nos pasó","Una cita que repetirías","Un momento simple pero bonito"],
-
-soft: ["Algo que admiro de ti","Un recuerdo feliz contigo","Qué me gusta de nosotros","Algo que valoro de ti","Qué me hace sentir bien contigo","Algo pequeño que me gusta","Un plan que quiero contigo","Algo que me gusta de tu forma de ser","Qué te hace especial para mí","Algo que me hace sonreír contigo"],
-
-roleplay: ["Somos dos desconocidos ligando fatal","Somos una pareja famosa","Somos dos abuelos discutiendo","Primera cita incómoda","Nos reencontramos tras años","Discusión absurda por comida","Somos influencers","Somos compañeros de piso","Somos rivales","Somos actores en una peli"],
-
-guess: ["Adivina qué estoy pensando","Adivina mi comida favorita","Adivina mi plan ideal","Adivina qué me apetece","Adivina mi serie favorita","Adivina qué haría ahora","Adivina qué me molesta","Adivina qué me hace feliz","Adivina qué elegiría","Adivina qué recuerdo diría"],
-
-prefer: ["¿Preferirías viajar siempre o no viajar nunca?","¿Preferirías vivir juntos ya o esperar?","¿Preferirías peli o fiesta?","¿Preferirías montaña o playa?","¿Preferirías cenar fuera o cocinar juntos?","¿Preferirías madrugar o trasnochar?","¿Preferirías ahorrar o gastar en experiencias?","¿Preferirías ver series o hacer planes?","¿Preferirías vivir en ciudad o pueblo?","¿Preferirías una sorpresa o planear todo?"],
-
-spicy: ["¿Qué es lo que más te atrae de mí?","¿Cuál fue el momento en que más te gusté?","¿Qué detalle mío te parece más especial?","¿Qué te gusta que haga contigo?","¿Qué outfit mío te gusta más?","¿Qué plan te parecería más romántico?","¿Qué te gustaría que hiciéramos más juntos?","¿Qué te pone nervioso/a de mí?","¿Qué momento repetirías?","¿Qué te gusta de nuestra química?"],
-
-photo: ["Busca una foto donde salgamos juntos felices","Busca una foto graciosa","Busca una foto que te recuerde a mí","Busca una foto que te guste mucho","Busca una foto antigua tuya","Busca una foto que represente tu día","Busca una foto que te haga reír","Busca una foto que repetirías","Busca una foto de un sitio especial","Busca una foto random y explícamela"]
-
+// ── SPORT CONFIG ──
+const SPORTS={
+  gym:{label:'Gimnasio',emoji:'🏋️',color:'var(--gym)'},
+  hyrox:{label:'Hyrox',emoji:'⚡',color:'var(--hyrox)'},
+  padel:{label:'Pádel',emoji:'🎾',color:'var(--padel)'},
+  bike:{label:'Bici',emoji:'🚴',color:'var(--bike)'},
+  run:{label:'Running',emoji:'🏃',color:'var(--run)'},
+  bc:{label:'Body Combat',emoji:'🎵',color:'var(--bc)'},
+  swim:{label:'Natación',emoji:'🏊',color:'var(--swim)'},
 };
 
-let currentCategory = [];
+// ── CALENDAR ──
+let calYear=2026,calMonth=4,selectedDate=null;
+const MONTHS_ES=['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
+const DAYS_ES=['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'];
+const WEEKDAYS_ES=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const MONTHNAMES_ES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 
-function showCategory(cat) {
-  if (cat === 'random') {
-    currentCategory = Object.values(gameCategories).flat();
+function dateKey(y,m,d){return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;}
+function sessionsForDate(dk){return Object.values(DB.sessions).filter(s=>s.date===dk).sort((a,b)=>a.time.localeCompare(b.time));}
+function changeMonth(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
+function goToday(){const n=new Date();calYear=n.getFullYear();calMonth=n.getMonth();selectedDate=dateKey(calYear,calMonth,n.getDate());renderCalendar();renderDayDetail();}
+
+function renderCalendar(){
+  document.getElementById('calMonth').textContent=`${MONTHS_ES[calMonth]} ${calYear}`;
+  const grid=document.getElementById('calGrid');
+  grid.innerHTML='';
+  DAYS_ES.forEach(d=>{const h=document.createElement('div');h.className='cal-day-header';h.textContent=d;grid.appendChild(h);});
+  const first=new Date(calYear,calMonth,1);
+  let startDow=first.getDay()-1;if(startDow<0)startDow=6;
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const daysInPrev=new Date(calYear,calMonth,0).getDate();
+  const today=new Date();
+  const todayKey=dateKey(today.getFullYear(),today.getMonth(),today.getDate());
+  let cells=[];
+  for(let i=startDow-1;i>=0;i--) cells.push({day:daysInPrev-i,month:calMonth-1,year:calYear,other:true});
+  for(let i=1;i<=daysInMonth;i++) cells.push({day:i,month:calMonth,year:calYear,other:false});
+  while(cells.length%7!==0){const extra=cells.length-startDow-daysInMonth+1;cells.push({day:extra,month:calMonth+1,year:calYear,other:true});}
+  cells.forEach(c=>{
+    const dk=dateKey(c.year,c.month,c.day);
+    const sessions=sessionsForDate(dk);
+    const cell=document.createElement('div');
+    cell.className='cal-cell'+(c.other?' other-month':'')+(dk===todayKey?' today':'')+(dk===selectedDate?' selected':'')+(sessions.length?' has-session':'');
+    cell.innerHTML=`<div class="cal-date">${c.day}</div><div class="cal-dots">${sessions.map(s=>`<div class="cal-dot" style="background:${SPORTS[s.sport]?.color||'var(--muted)'}"></div>`).join('')}</div>`;
+    cell.addEventListener('click',()=>{selectedDate=dk;renderCalendar();renderDayDetail();document.getElementById('dayDetail').scrollIntoView({behavior:'smooth',block:'nearest'});});
+    grid.appendChild(cell);
+  });
+}
+
+function renderDayDetail(){
+  if(!selectedDate){document.getElementById('dayDetail').style.display='none';return;}
+  const [y,m,d]=selectedDate.split('-').map(Number);
+  const dt=new Date(y,m-1,d);
+  document.getElementById('dayDetailTitle').textContent=`${WEEKDAYS_ES[dt.getDay()]} ${d} de ${MONTHNAMES_ES[m-1]} ${y}`;
+  const sessions=sessionsForDate(selectedDate);
+  document.getElementById('dayDetailSub').textContent=sessions.length?`${sessions.length} sesión${sessions.length>1?'es':''} programada${sessions.length>1?'s':''}`:'Sin entrenamientos programados';
+  const list=document.getElementById('sessionsList');
+  list.innerHTML=sessions.length?sessions.map(s=>renderSessionCard(s)).join(''):`<div class="empty-day"><div class="empty-icon">🗓️</div><p>No hay entrenamientos para este día.<br>Añade uno manualmente o genera uno con IA.</p></div>`;
+  document.getElementById('dayDetail').style.display='block';
+}
+
+function renderSessionCard(s){
+  const sp=SPORTS[s.sport]||{label:s.sport,emoji:'🏃',color:'var(--muted)'};
+  let body='';
+  if(s.exercises&&s.exercises.length>0){
+    body+=`<div style="overflow-x:auto"><table class="ex-table"><tr><th>Ejercicio</th><th>Series</th><th>Reps</th><th>Peso</th><th>Descanso</th></tr>${s.exercises.map(e=>`<tr><td>${e.name}</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted2)">${e.sets}</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted2)">${e.reps}</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted2)">${e.weight||'—'}</td><td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)">${e.rest||'—'}</td></tr>`).join('')}</table></div>`;
+  }
+  if(s.distance||s.speed){
+    body+=`<div style="margin-top:8px;font-size:12px;color:var(--muted2);font-family:'JetBrains Mono',monospace">${[s.zone,s.distance?s.distance+'km':'',s.speed,s.hr?'FC~'+s.hr:''].filter(Boolean).join(' · ')}</div>`;
+  }
+  if(s.targets) body+=`<div class="targets-row"><div class="target-pill">🎯 <strong>${s.targets}</strong></div></div>`;
+  if(s.notes) body+=`<div class="tip-box"><strong>Nota:</strong> ${s.notes}</div>`;
+  return `<div class="session-card" id="sc-${s.id}">
+    <div class="session-card-header">
+      <div class="session-card-title">
+        <span>${sp.emoji}</span>
+        <span class="session-sport-badge" style="border-color:${sp.color};color:${sp.color}">${sp.label}</span>
+        <span>${s.title}</span>
+        ${s.time?`<span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">${s.time}</span>`:''}
+        ${s.duration?`<span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">${s.duration}'</span>`:''}
+      </div>
+      <div class="session-card-actions">
+        <button class="done-chip ${s.done?'done':'pending'}" onclick="toggleDone('${s.id}')">${s.done?'✓ HECHO':'MARCAR HECHO'}</button>
+        <button class="icon-btn danger" onclick="deleteSession('${s.id}')">🗑</button>
+      </div>
+    </div>
+    <div class="session-card-body">${body}</div>
+  </div>`;
+}
+
+function toggleDone(id){if(DB.sessions[id])DB.sessions[id].done=!DB.sessions[id].done;save(DB);renderDayDetail();renderCalendar();}
+function deleteSession(id){if(!confirm('¿Eliminar esta sesión?'))return;delete DB.sessions[id];save(DB);renderDayDetail();renderCalendar();showToast('Sesión eliminada');}
+
+// ── MODAL HELPERS ──
+let aiGeneratedSession=null;
+let weekGeneratedPlan=null;
+
+function openModal(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';aiGeneratedSession=null;weekGeneratedPlan=null;const r=document.getElementById('aiResult');if(r){r.classList.remove('show');}const wr=document.getElementById('weekResult');if(wr){wr.classList.remove('show');}const bs=document.getElementById('btnSaveAI');if(bs)bs.style.display='none';const bw=document.getElementById('btnSaveWeek');if(bw)bw.style.display='none';}
+
+function openAddModal(){resetForm();if(selectedDate)document.getElementById('f-date').value=selectedDate;switchModalTab('manual');openModal('addModal');}
+function openAIModal(){switchModalTab('ai');if(selectedDate){document.getElementById('ai-date').value=selectedDate;}openModal('addModal');}
+function openWeekPlanModal(){
+  // set default week-start to next monday
+  const today=new Date();
+  const day=today.getDay();
+  const diff=day===0?1:8-day;
+  const nextMon=new Date(today);nextMon.setDate(today.getDate()+diff);
+  document.getElementById('week-start').value=nextMon.toISOString().split('T')[0];
+  openModal('weekModal');
+}
+
+function switchModalTab(tab){
+  document.querySelectorAll('.modal-tab').forEach((t,i)=>{t.classList.toggle('active',i===(tab==='manual'?0:1));});
+  document.getElementById('tab-manual').style.display=tab==='manual'?'block':'none';
+  document.getElementById('tab-ai').style.display=tab==='ai'?'block':'none';
+}
+
+function resetForm(){
+  ['f-date','f-time','f-duration','f-title','f-notes','f-distance','f-speed','f-hr','f-cardio-hr','f-cardio-rpe'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('f-sport').value='gym';
+  document.getElementById('exercisesEditor').innerHTML='';
+  updateSportFields();addExerciseRow();
+}
+
+function updateSportFields(){
+  const sport=document.getElementById('f-sport').value;
+  const isGym=sport==='gym'||sport==='hyrox';
+  const isEndurance=sport==='bike'||sport==='run';
+  const isCardio=sport==='padel'||sport==='bc'||sport==='swim';
+  document.getElementById('exercises-section').style.display=isGym?'block':'none';
+  document.getElementById('endurance-section').style.display=isEndurance?'block':'none';
+  document.getElementById('cardio-section').style.display=isCardio?'block':'none';
+  if(sport==='run'){
+    document.getElementById('speed-label').textContent='Ritmo objetivo';
+    document.getElementById('f-speed').placeholder="5'30\"/km";
   } else {
-    currentCategory = gameCategories[cat];
-  }
-  nextGame();
-}
-
-function nextGame() {
-  if (currentCategory.length === 0) {
-    document.getElementById("gameBox").innerText = "Elige un modo primero";
-    return;
-  }
-  const random = Math.floor(Math.random() * currentCategory.length);
-  document.getElementById("gameBox").innerText = currentCategory[random];
-}
-
-function openExternal(type) {
-  if (type === 'flags') {
-    window.open('https://worldle.teuteuf.fr/', '_blank');
-  }
-  if (type === 'higherlower') {
-    window.open('https://www.higherlowergame.com/', '_blank');
+    document.getElementById('speed-label').textContent='Velocidad objetivo';
+    document.getElementById('f-speed').placeholder='24.6 km/h';
   }
 }
 
-function dailyChallenge() {
-  const random = Math.floor(Math.random() * dailyChallengesList.length);
-  document.getElementById("gameBox").innerText = "📅 Reto diario:\n" + dailyChallengesList[random];
+function addExerciseRow(name='',sets='',weight='',rest=''){
+  const ed=document.getElementById('exercisesEditor');
+  const row=document.createElement('div');row.className='exercise-row';
+  row.innerHTML=`<input placeholder="Ejercicio" value="${name}"><input placeholder="4×8" value="${sets}"><input placeholder="kg" value="${weight}"><input placeholder='90"' value="${rest}"><button class="ex-remove" onclick="this.parentElement.remove()">✕</button>`;
+  ed.appendChild(row);
 }
 
+function saveSession(){
+  const sport=document.getElementById('f-sport').value;
+  const date=document.getElementById('f-date').value;
+  if(!date){showToast('Selecciona una fecha','error');return;}
+  const title=document.getElementById('f-title').value||SPORTS[sport]?.label||sport;
+  const id='s'+Date.now();
+  const isGym=sport==='gym'||sport==='hyrox';
+  const isEndurance=sport==='bike'||sport==='run';
+  const isCardio=sport==='padel'||sport==='bc'||sport==='swim';
+  const exercises=isGym?[...document.getElementById('exercisesEditor').querySelectorAll('.exercise-row')].map(r=>{const ins=r.querySelectorAll('input');return{name:ins[0].value,sets:ins[1].value,reps:'',weight:ins[2].value,rest:ins[3].value};}).filter(e=>e.name):[];
+  const hrCardio=document.getElementById('f-cardio-hr').value;
+  const rpeCardio=document.getElementById('f-cardio-rpe').value;
+  DB.sessions[id]={id,date,sport,title,
+    time:document.getElementById('f-time').value,
+    duration:+document.getElementById('f-duration').value||60,
+    exercises,
+    distance:isEndurance?(+document.getElementById('f-distance').value||null):null,
+    speed:isEndurance?(document.getElementById('f-speed').value||null):null,
+    hr:isEndurance?(+document.getElementById('f-hr').value||null):null,
+    zone:isEndurance?document.getElementById('f-zone').value:null,
+    targets:isCardio&&hrCardio?`FC ~${hrCardio}${rpeCardio?' · RPE '+rpeCardio:''}`:null,
+    notes:document.getElementById('f-notes').value,
+    done:false};
+  save(DB);
+  if(date!==selectedDate){selectedDate=date;calYear=+date.split('-')[0];calMonth=+date.split('-')[1]-1;}
+  closeModal('addModal');renderCalendar();renderDayDetail();
+  showToast('✓ Sesión guardada');
+}
+
+// ── AI SINGLE SESSION ──
+const AI_SYSTEM=`Eres el entrenador personal de Marcos López. Datos: 22 años, 177cm, 63.3kg, 11.9% grasa corporal, objetivo 65kg. Deportes: pádel, gimnasio (fuerza), Hyrox, bici outdoor (bici nueva: referencia 30km a 24.6km/h FC154 250m desnivel), Body Combat, running (largo: 21km 6'53"/km FC161; corto: 5.6km 5'33"/km FC164). FC reposo ~68 lpm. Sesiones gym suelen ser 40-45 min por tiempo. Gym 3 días/semana. Padel jueves y martes. Hyrox martes 16h. Bici outdoor nueva bici, buen nivel.
+
+Responde SOLO con JSON válido sin markdown:
+{"sport":"gym|hyrox|padel|bike|run|bc|swim","title":"título breve","duration":número_minutos,"exercises":[{"name":"nombre","sets":"4","reps":"8","weight":"","rest":"90\\""}],"distance":null_o_número,"speed":null_o_string,"hr":null_o_número,"zone":null_o_"Z1|Z2|Z3|Z4","targets":"objetivos clave","notes":"consejo importante"}
+Para gym/hyrox: rellena exercises. Para bike/run: rellena distance/speed/hr/zone. Para padel/bc/swim: exercises vacío, usa targets. Adapta siempre al nivel real de Marcos.`;
+
+function setAIExample(btn){document.getElementById('aiPrompt').value=btn.textContent;}
+
+async function generateWithAI(){
+  const prompt=document.getElementById('aiPrompt').value.trim();
+  if(!prompt){showToast('Escribe qué entrenamiento quieres','error');return;}
+  const btn=document.getElementById('btnGenerate');
+  btn.disabled=true;btn.innerHTML='<span class="loading-dots"><span></span><span></span><span></span></span>';
+  const result=document.getElementById('aiResult');result.classList.remove('show');
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:AI_SYSTEM,messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    const text=data.content.map(c=>c.text||'').join('');
+    const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
+    aiGeneratedSession=parsed;
+    const sp=SPORTS[parsed.sport]||{emoji:'🏃',label:parsed.sport,color:'var(--muted)'};
+    result.innerHTML=`<strong style="color:${sp.color}">${sp.emoji} ${parsed.title}</strong> · ${parsed.duration} min<br>
+${parsed.exercises?.length?`<strong>Ejercicios:</strong> ${parsed.exercises.map(e=>`${e.name} ${e.sets}×${e.reps}`).join(', ')}<br>`:''}
+${parsed.distance?`<strong>Bici/Run:</strong> ${parsed.distance}km · ${parsed.speed} · FC~${parsed.hr} · ${parsed.zone}<br>`:''}
+${parsed.targets?`<strong>Objetivos:</strong> ${parsed.targets}<br>`:''}
+${parsed.notes?`<strong>Nota:</strong> ${parsed.notes}`:''}`;
+    result.classList.add('show');
+    document.getElementById('btnSaveAI').style.display='block';
+  }catch(err){
+    result.innerHTML=`<span style="color:var(--gym)">Error generando. Comprueba tu conexión.</span>`;
+    result.classList.add('show');
+  }
+  btn.disabled=false;btn.innerHTML='✨ GENERAR ENTRENAMIENTO';
+}
+
+function saveAISession(){
+  if(!aiGeneratedSession)return;
+  const date=document.getElementById('ai-date').value;
+  if(!date){showToast('Selecciona una fecha','error');return;}
+  const id='ai'+Date.now();
+  DB.sessions[id]={id,date,...aiGeneratedSession,time:document.getElementById('ai-time').value,done:false};
+  save(DB);
+  if(date!==selectedDate){selectedDate=date;calYear=+date.split('-')[0];calMonth=+date.split('-')[1]-1;}
+  closeModal('addModal');renderCalendar();renderDayDetail();
+  showToast('✓ Sesión IA guardada');
+}
+
+// ── AI WEEK PLAN ──
+const WEEK_SYSTEM=`Eres el entrenador personal de Marcos López. Datos: 22 años, 177cm, 63.3kg, 11.9% grasa. Deportes: pádel, gimnasio fuerza (3 días/sem), Hyrox (martes 16h habitualmente), bici outdoor (nueva bici: 30km 24.6km/h FC154 250m D+), Body Combat, running, natación próximamente. FC reposo ~68. Running largo 6'53"/km FC161, corto 5'33"/km FC164. Sesiones gym 40-45 min. Padel habitualmente martes y jueves por la noche.
+
+El usuario te dará sus restricciones y disponibilidad de la semana. Genera un planning completo y equilibrado.
+
+Responde SOLO con JSON válido sin markdown:
+{"weekStart":"YYYY-MM-DD","days":[{"date":"YYYY-MM-DD","dayName":"Lunes","sessions":[{"sport":"gym|hyrox|padel|bike|run|bc|swim","title":"título","time":"HH:MM","duration":número,"exercises":[{"name":"nombre","sets":"4","reps":"8","weight":"","rest":"90\\""}],"distance":null_o_número,"speed":null_o_string,"hr":null_o_número,"zone":null_o_string,"targets":"objetivos","notes":"consejo"}]}]}
+
+Reglas:
+- Si un día no hay entrenamiento pon sessions:[]
+- Gym siempre ANTES que bici/running si coinciden en el mismo día
+- El día con Hyrox NO pongas gym (ya es suficiente carga)
+- Si hay pádel por la noche, el gym de ese día no llega al fallo
+- Descanso activo o nada los días de descanso indicados
+- Bici en base a la nueva bici (nivel real: 24-27km/h según zona)
+- Equilibra la carga: no pongas Alta intensidad 2 días seguidos sin alivio`;
+
+function setWeekExample(btn){document.getElementById('weekPrompt').value=btn.textContent;}
+
+async function generateWeekPlan(){
+  const prompt=document.getElementById('weekPrompt').value.trim();
+  const weekStart=document.getElementById('week-start').value;
+  const load=document.getElementById('week-load').value;
+  if(!prompt){showToast('Cuéntame cómo es tu semana','error');return;}
+  if(!weekStart){showToast('Selecciona la fecha de inicio','error');return;}
+  const btn=document.getElementById('btnGenWeek');
+  btn.disabled=true;btn.innerHTML='<span class="loading-dots"><span></span><span></span><span></span></span>';
+  const result=document.getElementById('weekResult');result.classList.remove('show');
+  const fullPrompt=`Semana del ${weekStart}. Nivel de carga: ${load}. Indicaciones del atleta: ${prompt}`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,system:WEEK_SYSTEM,messages:[{role:'user',content:fullPrompt}]})});
+    const data=await res.json();
+    const text=data.content.map(c=>c.text||'').join('');
+    const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
+    weekGeneratedPlan=parsed;
+    // Render preview
+    const daysWithSessions=parsed.days.filter(d=>d.sessions&&d.sessions.length>0);
+    result.innerHTML=`<strong style="color:var(--ai)">Planning generado · ${daysWithSessions.length} días con entrenamiento</strong><br><br>`+
+      parsed.days.map(d=>{
+        if(!d.sessions||d.sessions.length===0) return `<div style="padding:4px 0;color:var(--muted);font-size:11px">• <strong style="color:var(--muted2)">${d.dayName} ${d.date.split('-')[2]}</strong> — Descanso</div>`;
+        return d.sessions.map(s=>{
+          const sp=SPORTS[s.sport]||{emoji:'🏃',color:'var(--muted)'};
+          return `<div style="padding:4px 0;font-size:11px">• <strong style="color:${sp.color}">${d.dayName} ${d.date.split('-')[2]} ${s.time||''}</strong> ${sp.emoji} ${s.title} ${s.duration?'('+s.duration+'min)':''}</div>`;
+        }).join('');
+      }).join('');
+    result.classList.add('show');
+    document.getElementById('btnSaveWeek').style.display='block';
+  }catch(err){
+    result.innerHTML=`<span style="color:var(--gym)">Error generando el planning. Comprueba tu conexión.</span>`;
+    result.classList.add('show');
+  }
+  btn.disabled=false;btn.innerHTML='🗓 GENERAR PLANNING SEMANAL';
+}
+
+function saveWeekPlan(){
+  if(!weekGeneratedPlan)return;
+  let count=0;
+  weekGeneratedPlan.days.forEach(d=>{
+    if(!d.sessions||d.sessions.length===0)return;
+    d.sessions.forEach(s=>{
+      const id='wp'+Date.now()+Math.random().toString(36).slice(2,6);
+      DB.sessions[id]={id,date:d.date,...s,done:false};
+      count++;
+    });
+  });
+  save(DB);
+  // navigate to week start
+  const ws=weekGeneratedPlan.weekStart||weekGeneratedPlan.days[0]?.date;
+  if(ws){calYear=+ws.split('-')[0];calMonth=+ws.split('-')[1]-1;selectedDate=null;}
+  closeModal('weekModal');renderCalendar();
+  showToast(`✓ ${count} sesiones guardadas en el calendario`);
+}
+
+// ── STATS ──
+function renderStats(){
+  const all=Object.values(DB.sessions);
+  const grid=document.getElementById('statsGrid');
+  grid.innerHTML=[
+    {val:all.length,sub:'',lbl:'Sesiones totales',color:'var(--padel)',trend:''},
+    {val:Math.round(all.reduce((a,s)=>a+(s.duration||0),0)/60*10)/10,sub:'h',lbl:'Horas de entrenamiento',color:'var(--hyrox)',trend:''},
+    {val:all.filter(s=>s.done).length,sub:'',lbl:'Sesiones completadas',color:'var(--bike)',trend:''},
+    {val:Math.round(all.filter(s=>s.sport==='bike').reduce((a,s)=>a+(s.distance||0),0)),sub:'km',lbl:'Km en bici',color:'var(--run)',trend:''},
+    {val:'63,3',sub:'kg',lbl:'Peso actual',color:'var(--bc)',trend:'→ obj 65kg'},
+    {val:'11,9',sub:'%',lbl:'% Grasa corporal',color:'var(--swim)',trend:''},
+  ].map(s=>`<div class="stat-card" style="--sport-color:${s.color}">${s.trend?`<div class="stat-trend">${s.trend}</div>`:''}<div class="stat-val">${s.val}<sub>${s.sub}</sub></div><div class="stat-lbl">${s.lbl}</div></div>`).join('');
+  const counts={};all.forEach(s=>{counts[s.sport]=(counts[s.sport]||0)+1;});
+  const total=all.length||1;
+  document.getElementById('sportBars').innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([sport,count])=>{
+    const sp=SPORTS[sport]||{label:sport,color:'var(--muted)'};
+    return`<div class="week-bar"><div class="week-bar-sport">${sp.label}</div><div class="week-bar-track"><div class="week-bar-fill" style="width:${count/total*100}%;background:${sp.color}"></div></div><div class="week-bar-val">${count} ses.</div></div>`;
+  }).join('');
+}
+
+// ── PROFILE ──
+function renderProfile(){
+  document.getElementById('profileContent').innerHTML=`
+  <div class="profile-hero">
+    <div class="profile-avatar">ML</div>
+    <div>
+      <div class="profile-name-big">Marcos López</div>
+      <div class="profile-tags">
+        <span class="profile-tag">22 años</span>
+        <span class="profile-tag">177 cm</span>
+        <span class="profile-tag">63,3 kg</span>
+        <span class="profile-tag" style="color:var(--bike);border-color:rgba(163,255,110,0.3)">11,9% grasa</span>
+        <span class="profile-tag">IMC 20,0</span>
+        <span class="profile-tag">⌚ Apple Watch</span>
+        <span class="profile-tag">🍎 Apple Health</span>
+      </div>
+    </div>
+    <div class="bio-stats">
+      <div class="bio-stat"><div class="v">63,3<sub>kg</sub></div><div class="l">Peso actual</div></div>
+      <div class="bio-stat"><div class="v" style="color:var(--bike)">11,9<sub>%</sub></div><div class="l">Grasa corp.</div></div>
+      <div class="bio-stat"><div class="v" style="color:var(--muted2)">65<sub>kg</sub></div><div class="l">Objetivo</div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+    <div class="section-card">
+      <div class="section-card-title">Composición corporal</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div>
+          <div style="font-size:11px;color:var(--muted2);margin-bottom:4px">IMC · Índice de Masa Corporal</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--bike)">20,0</div>
+          <div style="font-size:11px;color:var(--bike)">✓ Rango óptimo deportista</div>
+        </div>
+      </div>
+      <div class="imc-bar"><div class="imc-needle" style="left:31.4%"></div></div>
+      <div class="imc-labels"><span>Bajo &lt;18.5</span><span>Normal 18.5–25</span><span>Sobre &gt;25</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px">
+        ${[['Agua','37,1 kg'],['Proteínas','15,8 kg'],['Grasa','7,5 kg'],['Masa ósea','2,9 kg']].map(([l,v])=>`<div style="background:var(--s2);border-radius:8px;padding:10px;border:1px solid var(--border)"><div style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:3px">${l}</div><div style="font-family:'Bebas Neue',sans-serif;font-size:18px">${v}</div></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-card-title">Anillos Apple Watch</div>
+      <div class="rings-display">
+        <div class="ring-item">
+          <svg width="70" height="70" class="ring-svg">
+            <circle cx="35" cy="35" r="28" fill="none" stroke="#1a1a2e" stroke-width="7"/>
+            <circle cx="35" cy="35" r="28" fill="none" stroke="var(--gym)" stroke-width="7" stroke-dasharray="175.9" stroke-dashoffset="47" stroke-linecap="round"/>
+          </svg>
+          <div class="ring-label">Mover</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--gym)">73%</div>
+        </div>
+        <div class="ring-item">
+          <svg width="70" height="70" class="ring-svg">
+            <circle cx="35" cy="35" r="28" fill="none" stroke="#1a1a2e" stroke-width="7"/>
+            <circle cx="35" cy="35" r="28" fill="none" stroke="var(--bike)" stroke-width="7" stroke-dasharray="175.9" stroke-dashoffset="35" stroke-linecap="round"/>
+          </svg>
+          <div class="ring-label">Ejercicio</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--bike)">80%</div>
+        </div>
+        <div class="ring-item">
+          <svg width="70" height="70" class="ring-svg">
+            <circle cx="35" cy="35" r="28" fill="none" stroke="#1a1a2e" stroke-width="7"/>
+            <circle cx="35" cy="35" r="28" fill="none" stroke="var(--padel)" stroke-width="7" stroke-dasharray="175.9" stroke-dashoffset="18" stroke-linecap="round"/>
+          </svg>
+          <div class="ring-label">De pie</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--padel)">90%</div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:10px;color:var(--muted);margin-top:12px;font-family:'JetBrains Mono',monospace;line-height:1.5">Conecta Apple Health para<br>datos en tiempo real</p>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-card-title">Benchmarks de rendimiento</div>
+    ${[
+      ['🏃 Running largo','21,4 km · 6\'53\"/km · FC 161 lpm','22 mar, Madrid · ~2h28'],
+      ['🏃 Running corto','5,6 km · 5\'33\"/km · FC 164 lpm','30 mar · esfuerzo real'],
+      ['🚴 Bici (bici nueva)','30 km · 24,6 km/h · FC 154 lpm · 250m D+','referencia actual — usar para planning'],
+      ['🎾 Pádel','~53 min · FC 139 lpm · RPE 6','12 may, Alcobendas'],
+      ['🏋️ Gym fuerza','~45 min · FC ~126 lpm · Moderado','sesiones habituales con tiempo limitado'],
+    ].map(([l,v,s])=>`<div class="benchmark-row"><div><div class="benchmark-label">${l}</div><div class="benchmark-sub">${s}</div></div><div class="benchmark-val" style="text-align:right">${v}</div></div>`).join('')}
+  </div>
+
+  <div class="section-card" style="background:linear-gradient(135deg,rgba(0,212,255,0.04),transparent);border-color:rgba(0,212,255,0.2)">
+    <div class="section-card-title">Instalar como app en iPhone</div>
+    <div style="display:flex;gap:16px;align-items:flex-start">
+      <div style="font-size:40px">📱</div>
+      <div>
+        <div style="font-size:13px;font-weight:500;color:var(--padel);margin-bottom:8px">Añadir SportOS a la pantalla de inicio</div>
+        <div style="font-size:12px;color:var(--muted2);line-height:1.8">
+          1. Abre esta página en <strong style="color:var(--text)">Safari</strong> (no Chrome)<br>
+          2. Toca el botón <strong style="color:var(--text)">Compartir</strong> (cuadrado con flecha ↑)<br>
+          3. Selecciona <strong style="color:var(--text)">"Añadir a pantalla de inicio"</strong><br>
+          4. Ponle nombre <strong style="color:var(--text)">"SportOS"</strong> y toca Añadir<br>
+          5. Se abre como app nativa, pantalla completa, sin barra del navegador
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace">Los datos se guardan en el dispositivo · Funciona sin conexión</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── NAV ──
+function showView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.nav-btn,.mobile-nav-btn').forEach(b=>{b.classList.toggle('active',b.getAttribute('onclick')?.includes(name));});
+  if(name==='stats')renderStats();
+  if(name==='profile')renderProfile();
+}
+
+// ── TOAST ──
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(type?' '+type:'');
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ── INIT ──
+const now=new Date();
+calYear=now.getFullYear();calMonth=now.getMonth();
+const d26=new Date(2026,4,26);
+if(now<=d26){calYear=2026;calMonth=4;selectedDate='2026-05-27';}
+renderCalendar();
+if(selectedDate)renderDayDetail();
+updateSportFields();
+
+document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this){const id=this.id;closeModal(id);}});});
 </script>
-
 </body>
 </html>
-
