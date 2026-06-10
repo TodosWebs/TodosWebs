@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mi Economía">
+<meta name="theme-color" content="#0a0a0c">
+<title>Mi Economía</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg:      #0a0a0c;
+  --bg2:     #111116;
+  --surface: #15151b;
+  --surface2:#1c1c24;
+  --border:  #222230;
+  --border2: #2a2a38;
+  --text:    #eeeaf4;
+  --muted:   #9090a8;
+  --dim:     #60607a;
+  --dim2:    #44445a;
+  --green:   #00c97e;
+  --green2:  #00a066;
+  --blue:    #3b82f6;
+  --amber:   #f59e0b;
+  --indigo:  #818cf8;
+  --red:     #f87171;
+  --pink:    #f472b6;
+  --purple:  #a78bfa;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+}
+
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow: hidden; }
+#app { display: flex; flex-direction: column; height: 100%; height: 100dvh; }
+
+/* ── HEADER ── */
+.header {
+  flex-shrink: 0;
+  background: linear-gradient(170deg, #0f0f14 0%, #13131a 100%);
+  border-bottom: 1px solid var(--border);
+  padding: calc(var(--safe-top) + 20px) 20px 0;
+}
+.header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
+.header-eyebrow { font-size: 9px; letter-spacing: 4px; color: var(--dim); text-transform: uppercase; margin-bottom: 5px; }
+.header-title { font-family: 'DM Serif Display', serif; font-size: 24px; font-weight: 400; letter-spacing: -0.3px; color: var(--text); }
+.header-right { text-align: right; }
+.saved-indicator { font-size: 9px; letter-spacing: 2px; color: var(--green); height: 13px; margin-bottom: 3px; opacity: 0; transition: opacity .3s; }
+.saved-indicator.show { opacity: 1; }
+.patrimonio-label { font-size: 9px; color: var(--dim); letter-spacing: 2px; text-transform: uppercase; }
+.patrimonio-amount { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--green); letter-spacing: -0.5px; }
+
+/* ── TABS ── */
+.tabs { display: flex; overflow-x: auto; scrollbar-width: none; gap: 0; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+  flex-shrink: 0; background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--dim); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase; padding: 10px 18px;
+  cursor: pointer; transition: color .2s, border-color .2s;
+}
+.tab-btn.active { color: var(--text); border-bottom-color: var(--green); }
+
+/* ── SCROLL AREA ── */
+.scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.scroll-inner { padding: 20px 16px calc(var(--safe-bot) + 28px); max-width: 640px; margin: 0 auto; }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 18px; margin-bottom: 14px;
+  position: relative; overflow: hidden;
+}
+.card-top-bar { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 16px 16px 0 0; }
+.card-eyebrow { font-size: 9px; letter-spacing: 3px; color: var(--dim); text-transform: uppercase; margin-bottom: 14px; }
+
+/* ── ACCOUNT GRID ── */
+.account-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.account-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; position: relative; overflow: hidden; }
+.account-card.wide { grid-column: 1 / -1; }
+.acc-emoji { font-size: 22px; margin-bottom: 10px; display: block; }
+.acc-tipo { font-size: 9px; letter-spacing: 2px; color: var(--dim); text-transform: uppercase; }
+.acc-name { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.acc-saldo { font-family: 'DM Serif Display', serif; font-size: 24px; font-weight: 400; margin-top: 12px; color: var(--text); }
+.acc-edit-btn {
+  position: absolute; top: 12px; right: 12px;
+  background: none; border: 1px solid var(--dim2); color: var(--dim);
+  border-radius: 6px; padding: 3px 8px; font-size: 10px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+.edit-inline { display: none; flex-direction: column; gap: 8px; margin-top: 12px; }
+.edit-inline.open { display: flex; }
+.edit-row { display: flex; gap: 8px; }
+.edit-row button { flex: 1; padding: 9px; border-radius: 9px; border: none; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; }
+.btn-save  { background: var(--green); color: #0a0a0c; }
+.btn-cancel-sm { background: none; border: 1px solid var(--dim2) !important; color: var(--dim); }
+
+/* ── STAT GRID ── */
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; }
+.stat-label { font-size: 9px; letter-spacing: 2px; color: var(--dim); text-transform: uppercase; margin-bottom: 7px; }
+.stat-value { font-family: 'DM Serif Display', serif; font-size: 20px; }
+
+/* ── TRANSACTIONS ── */
+.tx-row { display: flex; align-items: center; padding: 11px 0; border-bottom: 1px solid #1a1a22; gap: 10px; }
+.tx-row:last-child { border-bottom: none; }
+.tx-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.tx-body { flex: 1; min-width: 0; }
+.tx-concepto { font-size: 13px; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tx-meta { font-size: 10px; color: var(--dim2); margin-top: 2px; }
+.tx-amount { font-size: 14px; flex-shrink: 0; }
+.tx-del { background: none; border: none; color: var(--dim2); font-size: 20px; cursor: pointer; padding: 0; line-height: 1; flex-shrink: 0; }
+
+/* ── INPUTS ── */
+.field-col { display: flex; flex-direction: column; gap: 10px; }
+.field-row { display: flex; gap: 10px; }
+.inp {
+  background: var(--bg2); border: 1px solid var(--border2); color: var(--text);
+  border-radius: 11px; padding: 13px 15px; font-size: 15px;
+  font-family: 'DM Sans', sans-serif; width: 100%; outline: none;
+  -webkit-appearance: none; transition: border-color .2s;
+}
+.inp:focus { border-color: var(--dim); }
+select.inp { cursor: pointer; }
+.inp-sm { padding: 9px 11px; font-size: 13px; border-radius: 9px; }
+
+/* ── BUTTONS ── */
+.btn {
+  border: none; border-radius: 11px; padding: 14px; font-size: 14px;
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  cursor: pointer; width: 100%; letter-spacing: 0.2px; transition: opacity .15s;
+}
+.btn:active { opacity: .8; }
+.btn-green  { background: var(--green);  color: #0a0a0c; }
+.btn-indigo { background: var(--indigo); color: #0a0a0c; }
+.btn-outline { background: none; border: 1px solid var(--border2); color: var(--muted); }
+.btn-danger  { background: none; border: 1px solid #f8717144; color: var(--red); }
+.btn-blue    { background: #3b82f618; border: 1px solid #3b82f644; color: var(--blue); }
+.btn-navy    { background: #1e3a5f18; border: 1px solid #1e3a5f88; color: #7aadee; }
+.btn-green-soft { background: #00c97e18; border: 1px solid #00c97e44; color: var(--green); }
+
+/* ── PROGRESS ── */
+.prog-track { background: var(--surface2); border-radius: 6px; height: 7px; }
+.prog-fill   { height: 7px; border-radius: 6px; transition: width .5s ease; }
+.cat-track   { background: var(--surface2); border-radius: 4px; height: 5px; margin-top: 5px; }
+.cat-fill    { height: 5px; border-radius: 4px; transition: width .4s ease; }
+
+/* ── IMPORT MSG ── */
+.import-msg { font-size: 12px; line-height: 1.5; border-radius: 9px; padding: 10px 13px; margin-top: 12px; display: none; }
+.import-msg.open { display: block; }
+.import-msg.ok  { color: var(--green); background: #00c97e12; }
+.import-msg.warn { color: var(--amber); background: #f59e0b12; }
+.import-msg.err  { color: var(--red);   background: #f8717112; }
+
+/* ── EMPTY ── */
+.empty { color: var(--dim); font-size: 13px; padding: 6px 0 4px; line-height: 1.5; }
+
+/* ── DIVIDER ── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+
+/* ── SECTION TITLE (inline) ── */
+.inline-section-title { font-size: 9px; letter-spacing: 3px; color: var(--dim); text-transform: uppercase; margin-bottom: 12px; }
+
+/* ── IMPORT INSTRUCTIONS ── */
+.import-steps { font-size: 11px; color: var(--dim); margin-bottom: 8px; line-height: 1.6; }
+.import-steps strong { color: var(--muted); }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-top">
+      <div>
+        <div class="header-eyebrow">Panel Financiero Personal</div>
+        <div class="header-title">Mi Economía</div>
+      </div>
+      <div class="header-right">
+        <div class="saved-indicator" id="saved-indicator">✓ GUARDADO</div>
+        <div class="patrimonio-label">Patrimonio total</div>
+        <div class="patrimonio-amount" id="patrimonio-total">0,00 €</div>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="resumen">Resumen</button>
+      <button class="tab-btn" data-tab="gastos">Gastos</button>
+      <button class="tab-btn" data-tab="inversiones">Inversiones</button>
+      <button class="tab-btn" data-tab="metas">Metas</button>
+      <button class="tab-btn" data-tab="ajustes">Ajustes</button>
+    </nav>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="scroll" role="main">
+  <div class="scroll-inner">
+
+    <!-- ══ RESUMEN ══ -->
+    <div class="tab-pane active" id="pane-resumen">
+      <div class="account-grid" id="account-grid"></div>
+      <div class="stat-grid"    id="stat-grid"></div>
+      <div class="card">
+        <div class="card-eyebrow">Últimos gastos</div>
+        <div id="recent-list"><div class="empty">Sin gastos. Añade en la pestaña Gastos o importa un extracto.</div></div>
+      </div>
+    </div>
+
+    <!-- ══ GASTOS ══ -->
+    <div class="tab-pane" id="pane-gastos">
+
+      <!-- Import CSV -->
+      <div class="card">
+        <div class="card-eyebrow">Importar extractos bancarios</div>
+
+        <div style="margin-bottom:14px">
+          <div class="import-steps"><strong>Revolut</strong> → Cuenta → ··· → Exportar extracto → CSV</div>
+          <button class="btn btn-blue" onclick="document.getElementById('f-revolut').click()">💳 Importar Revolut CSV</button>
+          <input type="file" id="f-revolut" accept=".csv,.CSV" style="display:none" onchange="importCSV(this,'revolut')">
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div class="import-steps"><strong>Sabadell</strong> → Mis cuentas → Movimientos → Exportar → CSV / Excel</div>
+          <button class="btn btn-navy" onclick="document.getElementById('f-sabadell').click()">🏦 Importar Sabadell CSV</button>
+          <input type="file" id="f-sabadell" accept=".csv,.CSV,.xls,.xlsx" style="display:none" onchange="importCSV(this,'sabadell')">
+        </div>
+
+        <div style="margin-bottom:0">
+          <div class="import-steps"><strong>MyInvestor</strong> → Mis inversiones → Exportar posiciones → CSV</div>
+          <button class="btn btn-green-soft" onclick="document.getElementById('f-myinvestor').click()">📈 Importar MyInvestor CSV</button>
+          <input type="file" id="f-myinvestor" accept=".csv,.CSV" style="display:none" onchange="importCSV(this,'myinvestor')">
+        </div>
+
+        <div class="import-msg" id="import-msg"></div>
+      </div>
+
+      <!-- Manual -->
+      <div class="card">
+        <div class="card-eyebrow">Añadir gasto manual</div>
+        <div class="field-col">
+          <input class="inp" id="g-concepto" type="text" placeholder="Concepto" autocomplete="off">
+          <div class="field-row">
+            <input class="inp" id="g-importe" type="number" inputmode="decimal" placeholder="Importe €" style="flex:1">
+            <select class="inp" id="g-cat" style="flex:1">
+              <option>Ocio</option><option>Movilidad</option><option>Alimentación</option>
+              <option>Personal</option><option>Suscripciones</option><option>Otros</option>
+            </select>
+          </div>
+          <button class="btn btn-green" onclick="addGasto()">+ Añadir gasto</button>
+        </div>
+      </div>
+
+      <!-- List -->
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div class="card-eyebrow" style="margin:0" id="gastos-count-label">0 gastos</div>
+          <div style="font-size:13px;color:var(--amber)" id="gastos-total-label">0,00 €</div>
+        </div>
+        <div id="gastos-list"><div class="empty">Sin gastos registrados.</div></div>
+        <div id="cat-section" style="display:none">
+          <hr class="divider">
+          <div class="inline-section-title">Por categoría</div>
+          <div id="cat-bars"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ INVERSIONES ══ -->
+    <div class="tab-pane" id="pane-inversiones">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div class="card" style="margin:0">
+          <div class="card-eyebrow">Invertido</div>
+          <div class="stat-value" id="inv-invertido-total">0 €</div>
+        </div>
+        <div class="card" style="margin:0">
+          <div class="card-eyebrow">Valor actual</div>
+          <div class="stat-value" id="inv-valor-total" style="color:var(--green)">0 €</div>
+          <div style="font-size:11px;color:var(--green);margin-top:4px" id="inv-rent-label"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-eyebrow">Posiciones</div>
+        <div id="inv-list"></div>
+        <hr class="divider">
+        <div class="inline-section-title">Añadir / editar posición</div>
+        <div class="field-col">
+          <input class="inp" id="inv-nombre" type="text" placeholder="Nombre (ej: S&P 500 Amundi)" autocomplete="off">
+          <select class="inp" id="inv-tipo">
+            <option>Fondo indexado</option><option>ETF</option>
+            <option>Acciones</option><option>Cripto</option><option>Otros</option>
+          </select>
+          <div class="field-row">
+            <input class="inp" id="inv-inv" type="number" inputmode="decimal" placeholder="Invertido €">
+            <input class="inp" id="inv-val" type="number" inputmode="decimal" placeholder="Valor actual €">
+          </div>
+          <button class="btn btn-green" onclick="addInversion()">+ Añadir posición</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ METAS ══ -->
+    <div class="tab-pane" id="pane-metas">
+      <div class="card">
+        <div class="card-eyebrow">Nueva meta de ahorro</div>
+        <div class="field-col">
+          <input class="inp" id="m-nombre" type="text" placeholder="Nombre (ej: Fondo de emergencia)" autocomplete="off">
+          <input class="inp" id="m-obj" type="number" inputmode="decimal" placeholder="Objetivo €">
+          <button class="btn btn-indigo" onclick="addMeta()">+ Añadir meta</button>
+        </div>
+      </div>
+      <div id="metas-list"></div>
+    </div>
+
+    <!-- ══ AJUSTES ══ -->
+    <div class="tab-pane" id="pane-ajustes">
+      <div class="card">
+        <div class="card-eyebrow">Ingresos mensuales</div>
+        <div class="field-row" style="align-items:center">
+          <input class="inp" id="nomina-inp" type="number" inputmode="decimal" placeholder="350" style="flex:1">
+          <button class="btn btn-green" style="width:auto;padding:13px 20px;flex-shrink:0" onclick="saveNomina()">Guardar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-eyebrow">Backup de datos</div>
+        <div style="font-size:12px;color:var(--dim);margin-bottom:14px;line-height:1.6">
+          Tus datos se guardan automáticamente en este navegador (localStorage).<br>
+          Usa el backup JSON para conservarlos si cambias de dispositivo.
+        </div>
+        <div class="field-col">
+          <button class="btn btn-outline" onclick="exportJSON()">↓ Exportar backup JSON</button>
+          <label class="btn btn-outline" style="text-align:center;cursor:pointer;display:block;padding:14px">
+            ↑ Importar backup JSON
+            <input type="file" accept=".json" style="display:none" onchange="importJSON(this)">
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-eyebrow" style="color:#f8717155">Zona peligrosa</div>
+        <div style="font-size:12px;color:var(--dim);margin-bottom:14px;line-height:1.5">
+          Borra todos los datos del dashboard y vuelve al estado inicial.
+        </div>
+        <button class="btn btn-danger" onclick="resetData()">🗑 Resetear todos los datos</button>
+      </div>
+    </div>
+
+  </div><!-- /scroll-inner -->
+  </div><!-- /scroll -->
+</div><!-- /app -->
+
+<script>
+// ════════════════════════════════════════════════════════
+//  CONSTANTS
+// ════════════════════════════════════════════════════════
+const STORE_KEY = 'mieconomia-v3';
+
+const CAT_COLOR = {
+  Ocio:'#f59e0b', Movilidad:'#818cf8', Alimentación:'#10b981',
+  Personal:'#f472b6', Suscripciones:'#3b82f6', Otros:'#a78bfa'
+};
+const INV_PALETTE = ['#00c97e','#3b82f6','#f59e0b','#f472b6','#818cf8','#a78bfa','#10b981'];
+
+const ACCOUNTS_META = {
+  sabadell:   { nombre:'Banco Sabadell', emoji:'🏦', tipo:'Patrimonio', color:'#1e4080' },
+  revolut:    { nombre:'Revolut',        emoji:'💳', tipo:'Gastos',     color:'#3b82f6' },
+  myinvestor: { nombre:'MyInvestor',     emoji:'📈', tipo:'Inversión',  color:'#00c97e' },
+};
+
+const DEFAULT = () => ({
+  cuentas:    { sabadell:0, revolut:0, myinvestor:0 },
+  nomina:     350,
+  gastos:     [],
+  inversiones:[],
+  metas:      [{ nombre:'Fondo de emergencia', objetivo:3000, actual:0 }],
+});
+
+// ════════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════════
+let S = DEFAULT();
+
+function load() {
+  try { const r = localStorage.getItem(STORE_KEY); if (r) S = JSON.parse(r); } catch(e){}
+}
+
+function save() {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(S));
+    const el = document.getElementById('saved-indicator');
+    el.classList.add('show');
+    clearTimeout(el._t);
+    el._t = setTimeout(()=>el.classList.remove('show'), 2000);
+  } catch(e){}
+}
+
+// ════════════════════════════════════════════════════════
+//  FORMAT HELPERS
+// ════════════════════════════════════════════════════════
+const eur = n => (+n).toLocaleString('es-ES',{style:'currency',currency:'EUR'});
+const num2 = n => (+n).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});
+const today = () => new Date().toISOString().split('T')[0];
+
+// ════════════════════════════════════════════════════════
+//  AUTO-CATEGORY
+// ════════════════════════════════════════════════════════
+function autoCat(txt) {
+  const l = (txt||'').toLowerCase();
+  if (/spotify|netflix|amazon prime|apple|disney|hbo|youtube premium|audible/.test(l)) return 'Suscripciones';
+  if (/taxi|uber|cabify|metro|renfe|cercan|tren|bus |autobus|bicing|bizi|valenbisi|caballo|avion|vueling|iberia|ryanair/.test(l)) return 'Movilidad';
+  if (/mercadona|lidl|aldi|carrefour|dia |hipercor|consum|superm|fruteria|panaderia|carniceria|alcampo|ahorra/.test(l)) return 'Alimentación';
+  if (/restaur|hamburgues|mcdonalds|burger|telepizza|glovo|deliveroo|just eat|bar |cafe|cafeteria|heladeria|cine|teatro|museo|concierto/.test(l)) return 'Ocio';
+  if (/zara|mango|primark|h&m|pull|bershka|stradivarius|farmacia|peluqueria|gym|gimnasio/.test(l)) return 'Personal';
+  return 'Otros';
+}
+
+// ════════════════════════════════════════════════════════
+//  CSV PARSERS
+// ════════════════════════════════════════════════════════
+
+/* ── REVOLUT ── */
+function parseRevolut(text) {
+  const lines = text.trim().split(/\r?\n/).filter(l=>l.trim());
+  // find header row
+  const hi = lines.findIndex(l => {
+    const lo = l.toLowerCase();
+    return lo.includes('completed date') || lo.includes('started date') || (lo.includes('date') && lo.includes('amount'));
+  });
+  if (hi === -1) throw new Error('No se reconoce el formato Revolut. Exporta desde: Cuenta → ··· → Exportar extracto.');
+
+  const headers = lines[hi].split(',').map(h=>h.replace(/"/g,'').trim().toLowerCase());
+  const col = name => headers.findIndex(h=>h.includes(name));
+  const iDesc  = col('description');
+  const iAmt   = col('amount');
+  const iDate  = col('completed date') !== -1 ? col('completed date') : col('started date');
+  const iState = col('state');
+
+  const results = [];
+  lines.slice(hi+1).forEach((line, idx) => {
+    // handle quoted fields with commas inside
+    const cols = parseCsvLine(line);
+    const clean = i => (cols[i]||'').replace(/"/g,'').trim();
+    // skip non-completed
+    if (iState !== -1 && clean(iState).toLowerCase() !== 'completed') return;
+    const amt = parseFloat(clean(iAmt).replace(',','.'));
+    if (isNaN(amt) || amt >= 0) return; // only expenses
+    const concepto = clean(iDesc) || 'Revolut';
+    const raw = clean(iDate);
+    const fecha = raw.split(' ')[0] || today();
+    results.push({
+      id: Date.now() + idx,
+      concepto, importe: Math.abs(amt),
+      categoria: autoCat(concepto),
+      fecha, origen: 'Revolut'
+    });
+  });
+  return results;
+}
+
+/* ── SABADELL ── */
+function parseSabadell(text) {
+  // Sabadell uses ; separator, dd/mm/yyyy dates
+  const sep = text.split('\n').slice(0,5).join('').includes(';') ? ';' : ',';
+  const lines = text.trim().split(/\r?\n/).filter(l=>l.trim());
+
+  const hi = lines.findIndex(l => {
+    const lo = l.toLowerCase();
+    return (lo.includes('fecha') || lo.includes('f.valor')) && (lo.includes('importe') || lo.includes('cargo'));
+  });
+  if (hi === -1) throw new Error('No se reconoce el formato Sabadell. Exporta desde: Mis cuentas → Movimientos → Exportar.');
+
+  const headers = lines[hi].split(sep).map(h=>h.replace(/"/g,'').trim().toLowerCase());
+  const col = name => headers.findIndex(h=>h.includes(name));
+  const iDate  = col('f.valor') !== -1 ? col('f.valor') : col('fecha');
+  const iDesc  = col('concepto');
+  const iAmt   = col('importe') !== -1 ? col('importe') : col('cargo');
+
+  const results = [];
+  lines.slice(hi+1).forEach((line, idx) => {
+    const cols = line.split(sep).map(c=>c.replace(/"/g,'').trim());
+    if (cols.length < 3) return;
+    const raw = cols[iAmt]||'0';
+    // Sabadell uses period as thousand-sep and comma as decimal: "1.234,56"
+    const amt = parseFloat(raw.replace(/\./g,'').replace(',','.'));
+    if (isNaN(amt) || amt >= 0) return;
+    const concepto = cols[iDesc] || 'Sabadell';
+    if (/transfer|nomina|nómina|traspaso|ingreso/i.test(concepto)) return;
+    // date dd/mm/yyyy → yyyy-mm-dd
+    let fecha = cols[iDate]||today();
+    const dm = fecha.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
+    if (dm) fecha = `${dm[3].length===2?'20'+dm[3]:dm[3]}-${dm[2].padStart(2,'0')}-${dm[1].padStart(2,'0')}`;
+    results.push({
+      id: Date.now() + idx,
+      concepto, importe: Math.abs(amt),
+      categoria: autoCat(concepto),
+      fecha, origen: 'Sabadell'
+    });
+  });
+  return results;
+}
+
+/* ── MYINVESTOR ── */
+function parseMyInvestor(text) {
+  // MyInvestor position export: fund name, shares, value, invested, profit...
+  const lines = text.trim().split(/\r?\n/).filter(l=>l.trim());
+  const sep = text.includes(';') ? ';' : ',';
+
+  const hi = lines.findIndex(l => {
+    const lo = l.toLowerCase();
+    return lo.includes('nombre') || lo.includes('fondo') || lo.includes('producto') || lo.includes('name');
+  });
+  if (hi === -1) throw new Error('No se reconoce el formato MyInvestor. Exporta desde: Mis inversiones → Exportar.');
+
+  const headers = lines[hi].split(sep).map(h=>h.replace(/"/g,'').trim().toLowerCase());
+  const col = (...names) => { for (const n of names) { const i=headers.findIndex(h=>h.includes(n)); if(i!==-1) return i; } return -1; };
+
+  const iName  = col('nombre','fondo','producto','name','descripcion');
+  const iInv   = col('invertido','coste','capital','aportado','invested');
+  const iVal   = col('valor actual','valoracion','market value','valor');
+  const iTipo  = col('tipo','type','categoria','clase');
+
+  const posiciones = [];
+  lines.slice(hi+1).forEach((line, idx) => {
+    const cols = line.split(sep).map(c=>c.replace(/"/g,'').trim());
+    if (cols.length < 2) return;
+    const nombre = cols[iName] || `Posición ${idx+1}`;
+    const parseNum = i => {
+      if (i === -1) return 0;
+      return parseFloat((cols[i]||'0').replace(/\./g,'').replace(',','.').replace(/[^\d.-]/g,'')) || 0;
+    };
+    const invertido = parseNum(iInv);
+    const valorActual = iVal !== -1 ? parseNum(iVal) : invertido;
+    if (invertido === 0 && valorActual === 0) return;
+    const tipo = iTipo !== -1 ? cols[iTipo] : 'Fondo indexado';
+    posiciones.push({ nombre, tipo: tipo||'Fondo indexado', invertido, valorActual });
+  });
+  return posiciones;
+}
+
+/* ── CSV line parser (handles quoted fields) ── */
+function parseCsvLine(line) {
+  const result = [];
+  let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQ = !inQ; }
+    else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+    else cur += c;
+  }
+  result.push(cur);
+  return result;
+}
+
+/* ── DEDUP ── */
+function dedup(newItems, existing) {
+  const seen = new Set(existing.map(g=>`${g.concepto}|${g.fecha}|${g.importe}`));
+  return newItems.filter(g=>!seen.has(`${g.concepto}|${g.fecha}|${g.importe}`));
+}
+
+/* ── MAIN IMPORT ── */
+function importCSV(input, banco) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const text = e.target.result;
+
+      if (banco === 'myinvestor') {
+        // Updates inversiones
+        const posiciones = parseMyInvestor(text);
+        if (!posiciones.length) { showImportMsg('⚠️ No se encontraron posiciones en el archivo.','warn'); return; }
+        // merge: update existing by name, add new ones
+        posiciones.forEach(p => {
+          const existIdx = S.inversiones.findIndex(i=>i.nombre.toLowerCase()===p.nombre.toLowerCase());
+          if (existIdx !== -1) {
+            S.inversiones[existIdx].invertido   = p.invertido;
+            S.inversiones[existIdx].valorActual = p.valorActual;
+          } else {
+            const color = INV_PALETTE[S.inversiones.length % INV_PALETTE.length];
+            S.inversiones.push({ ...p, color });
+          }
+        });
+        save(); render();
+        showImportMsg(`✓ ${posiciones.length} posiciones actualizadas desde MyInvestor`, 'ok');
+        return;
+      }
+
+      // Gastos (Revolut / Sabadell)
+      const nuevos = banco === 'revolut' ? parseRevolut(text) : parseSabadell(text);
+      if (!nuevos.length) { showImportMsg('⚠️ No se encontraron gastos en el archivo.','warn'); return; }
+      const filtrados = dedup(nuevos, S.gastos);
+      S.gastos = [...S.gastos, ...filtrados];
+      save(); render();
+      const omit = nuevos.length - filtrados.length;
+      showImportMsg(
+        `✓ ${filtrados.length} gastos importados de ${banco==='revolut'?'Revolut':'Sabadell'}` +
+        (omit > 0 ? ` (${omit} duplicados omitidos)` : ''),
+        'ok'
+      );
+    } catch(err) {
+      showImportMsg('❌ ' + err.message, 'err');
+    }
+    input.value = '';
+  };
+  reader.readAsText(file, 'utf-8');
+}
+
+function showImportMsg(text, type) {
+  const el = document.getElementById('import-msg');
+  el.textContent = text;
+  el.className = `import-msg open ${type}`;
+  clearTimeout(el._t);
+  el._t = setTimeout(()=>{ el.className='import-msg'; }, 6000);
+}
+
+// ════════════════════════════════════════════════════════
+//  ACTIONS
+// ════════════════════════════════════════════════════════
+function startEditSaldo(key) {
+  document.querySelectorAll('.edit-inline').forEach(e=>e.classList.remove('open'));
+  document.getElementById('edit-inline-'+key)?.classList.add('open');
+  document.getElementById('inp-saldo-'+key)?.focus();
+}
+function cancelEditSaldo(key) { document.getElementById('edit-inline-'+key)?.classList.remove('open'); }
+function saveEditSaldo(key) {
+  const v = parseFloat(document.getElementById('inp-saldo-'+key)?.value);
+  if (!isNaN(v)) { S.cuentas[key] = v; save(); render(); }
+  cancelEditSaldo(key);
+}
+
+function addGasto() {
+  const c = document.getElementById('g-concepto').value.trim();
+  const i = parseFloat(document.getElementById('g-importe').value);
+  const cat = document.getElementById('g-cat').value;
+  if (!c || isNaN(i) || i <= 0) return;
+  S.gastos.push({ id:Date.now(), concepto:c, importe:i, categoria:cat, fecha:today(), origen:'Manual' });
+  document.getElementById('g-concepto').value = '';
+  document.getElementById('g-importe').value  = '';
+  save(); render();
+}
+
+function delGasto(id) { S.gastos = S.gastos.filter(g=>g.id!==id); save(); render(); }
+
+function addInversion() {
+  const nombre = document.getElementById('inv-nombre').value.trim();
+  const tipo   = document.getElementById('inv-tipo').value;
+  const inv    = parseFloat(document.getElementById('inv-inv').value);
+  const val    = parseFloat(document.getElementById('inv-val').value) || inv;
+  if (!nombre || isNaN(inv)) return;
+  const color = INV_PALETTE[S.inversiones.length % INV_PALETTE.length];
+  S.inversiones.push({ nombre, tipo, invertido:inv, valorActual:val, color });
+  ['inv-nombre','inv-inv','inv-val'].forEach(id=>document.getElementById(id).value='');
+  save(); render();
+}
+
+function updateInv(idx, field, val) {
+  const v = parseFloat(val); if (isNaN(v)) return;
+  S.inversiones[idx][field] = v; save(); render();
+}
+function delInv(idx) { S.inversiones.splice(idx,1); save(); render(); }
+
+function addMeta() {
+  const nombre = document.getElementById('m-nombre').value.trim();
+  const obj    = parseFloat(document.getElementById('m-obj').value);
+  if (!nombre || isNaN(obj)) return;
+  S.metas.push({ nombre, objetivo:obj, actual:0 });
+  document.getElementById('m-nombre').value = '';
+  document.getElementById('m-obj').value    = '';
+  save(); render();
+}
+function updateMeta(idx, val) {
+  const v = parseFloat(val); if (isNaN(v)) return;
+  S.metas[idx].actual = v; save(); render();
+}
+function delMeta(idx) { S.metas.splice(idx,1); save(); render(); }
+
+function saveNomina() {
+  const v = parseFloat(document.getElementById('nomina-inp').value);
+  if (!isNaN(v)) { S.nomina = v; save(); render(); }
+}
+
+function exportJSON() {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}));
+  a.download = 'mieconomia-backup.json'; a.click();
+}
+function importJSON(input) {
+  const f = input.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = e => { try { S=JSON.parse(e.target.result); save(); render(); } catch { alert('Archivo no válido'); } };
+  r.readAsText(f);
+}
+function resetData() {
+  if (confirm('¿Seguro? Esto borrará todos los datos permanentemente.')) {
+    S = DEFAULT(); save(); render();
+  }
+}
+
+// ════════════════════════════════════════════════════════
+//  RENDER
+// ════════════════════════════════════════════════════════
+function render() {
+  const totalPat   = Object.values(S.cuentas).reduce((s,v)=>s+v, 0);
+  const totalInv   = S.inversiones.reduce((s,i)=>s+i.invertido, 0);
+  const totalVal   = S.inversiones.reduce((s,i)=>s+i.valorActual, 0);
+  const rent       = totalInv > 0 ? ((totalVal-totalInv)/totalInv)*100 : 0;
+  const totalGast  = S.gastos.reduce((s,g)=>s+g.importe, 0);
+  const ahorro     = S.nomina - totalGast;
+
+  // patrimonio
+  document.getElementById('patrimonio-total').textContent = eur(totalPat);
+
+  // ── ACCOUNTS ──
+  const entries = Object.entries(ACCOUNTS_META);
+  document.getElementById('account-grid').innerHTML = entries.map(([key, meta], i) => {
+    const isOdd = entries.length % 2 !== 0;
+    const wide  = isOdd && i === entries.length - 1;
+    return `
+    <div class="account-card${wide?' wide':''}">
+      <div class="card-top-bar" style="background:${meta.color}"></div>
+      <button class="acc-edit-btn" onclick="startEditSaldo('${key}')">editar</button>
+      <span class="acc-emoji">${meta.emoji}</span>
+      <div class="acc-tipo">${meta.tipo}</div>
+      <div class="acc-name">${meta.nombre}</div>
+      <div class="acc-saldo">${eur(S.cuentas[key]||0)}</div>
+      <div class="edit-inline" id="edit-inline-${key}">
+        <input class="inp inp-sm" id="inp-saldo-${key}" type="number" inputmode="decimal" value="${S.cuentas[key]||0}" placeholder="Nuevo saldo">
+        <div class="edit-row">
+          <button class="btn-save"      onclick="saveEditSaldo('${key}')">✓ Guardar</button>
+          <button class="btn-cancel-sm" onclick="cancelEditSaldo('${key}')">Cancelar</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // ── STATS ──
+  document.getElementById('stat-grid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Nómina</div>
+      <div class="stat-value" style="color:var(--green)">${num2(S.nomina)} €</div></div>
+    <div class="stat-card"><div class="stat-label">Gastos mes</div>
+      <div class="stat-value" style="color:var(--amber)">${num2(totalGast)} €</div></div>
+    <div class="stat-card"><div class="stat-label">Ahorro est.</div>
+      <div class="stat-value" style="color:${ahorro>=0?'var(--indigo)':'var(--red)'}">${num2(ahorro)} €</div></div>
+    <div class="stat-card"><div class="stat-label">Rentab. inv.</div>
+      <div class="stat-value" style="color:var(--green)">${totalInv>0?'+'+rent.toFixed(1)+'%':'—'}</div></div>
+  `;
+
+  // ── RECENT GASTOS ──
+  const rl = document.getElementById('recent-list');
+  if (!S.gastos.length) {
+    rl.innerHTML = '<div class="empty">Sin gastos. Añade en Gastos o importa un extracto.</div>';
+  } else {
+    rl.innerHTML = [...S.gastos].slice(-5).reverse().map(g=>`
+      <div class="tx-row">
+        <div class="tx-dot" style="background:${CAT_COLOR[g.categoria]||'#666'}"></div>
+        <div class="tx-body">
+          <div class="tx-concepto">${esc(g.concepto)}</div>
+          <div class="tx-meta">${g.categoria} · ${g.fecha}</div>
+        </div>
+        <div class="tx-amount">−${num2(g.importe)} €</div>
+      </div>`).join('');
+  }
+
+  // ── GASTOS TAB ──
+  document.getElementById('gastos-count-label').textContent = `${S.gastos.length} gastos`;
+  document.getElementById('gastos-total-label').textContent = `${num2(totalGast)} €`;
+  const gl = document.getElementById('gastos-list');
+  if (!S.gastos.length) {
+    gl.innerHTML = '<div class="empty">Sin gastos registrados.</div>';
+  } else {
+    gl.innerHTML = [...S.gastos].reverse().map(g=>`
+      <div class="tx-row">
+        <div class="tx-dot" style="background:${CAT_COLOR[g.categoria]||'#666'}"></div>
+        <div class="tx-body">
+          <div class="tx-concepto">${esc(g.concepto)}</div>
+          <div class="tx-meta">${g.categoria} · ${g.fecha}${g.origen&&g.origen!=='Manual'?' · '+g.origen:''}</div>
+        </div>
+        <div class="tx-amount">${num2(g.importe)} €</div>
+        <button class="tx-del" onclick="delGasto(${g.id})">×</button>
+      </div>`).join('');
+  }
+
+  // category breakdown
+  const catSec = document.getElementById('cat-section');
+  if (totalGast > 0) {
+    catSec.style.display = 'block';
+    const cats = S.gastos.reduce((acc,g)=>{ acc[g.categoria]=(acc[g.categoria]||0)+g.importe; return acc; },{});
+    document.getElementById('cat-bars').innerHTML = Object.entries(cats)
+      .sort((a,b)=>b[1]-a[1])
+      .map(([cat,tot])=>`
+        <div style="margin-bottom:11px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px">
+            <span>${cat}</span><span>${num2(tot)} € · ${((tot/totalGast)*100).toFixed(0)}%</span>
+          </div>
+          <div class="cat-track">
+            <div class="cat-fill" style="background:${CAT_COLOR[cat]||'#666'};width:${(tot/totalGast)*100}%"></div>
+          </div>
+        </div>`).join('');
+  } else { catSec.style.display='none'; }
+
+  // ── INVERSIONES TAB ──
+  document.getElementById('inv-invertido-total').textContent = num2(totalInv)+' €';
+  document.getElementById('inv-valor-total').textContent     = num2(totalVal)+' €';
+  const rentEl = document.getElementById('inv-rent-label');
+  rentEl.textContent = totalInv>0 ? `+${num2(totalVal-totalInv)} € · +${rent.toFixed(2)}%` : '';
+
+  const il = document.getElementById('inv-list');
+  if (!S.inversiones.length) {
+    il.innerHTML = '<div class="empty" style="margin-bottom:4px">Sin posiciones. Añade tu primera posición abajo.</div>';
+  } else {
+    il.innerHTML = S.inversiones.map((inv,i)=>{
+      const r    = inv.invertido>0 ? ((inv.valorActual-inv.invertido)/inv.invertido)*100 : 0;
+      const peso = totalVal>0 ? (inv.valorActual/totalVal)*100 : 0;
+      return `
+      <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+          <div style="display:flex;align-items:center;gap:9px;flex:1;min-width:0">
+            <div style="width:9px;height:9px;border-radius:50%;background:${inv.color};flex-shrink:0"></div>
+            <div style="min-width:0">
+              <div style="font-size:14px;color:#ccc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(inv.nombre)}</div>
+              <div style="font-size:10px;color:var(--dim);margin-top:2px">${esc(inv.tipo)}</div>
+            </div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;margin-left:10px">
+            <div style="font-family:'DM Serif Display',serif;font-size:17px">${num2(inv.valorActual)} €</div>
+            <div style="font-size:11px;color:${r>=0?'var(--green)':'var(--red)'}">${r>=0?'+':''}${r.toFixed(1)}%</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:8px">
+          <div style="flex:1">
+            <div style="font-size:10px;color:var(--dim);margin-bottom:4px">Invertido €</div>
+            <input class="inp inp-sm" type="number" inputmode="decimal" value="${inv.invertido}"
+              onchange="updateInv(${i},'invertido',this.value)">
+          </div>
+          <div style="flex:1">
+            <div style="font-size:10px;color:var(--dim);margin-bottom:4px">Valor actual €</div>
+            <input class="inp inp-sm" type="number" inputmode="decimal" value="${inv.valorActual}"
+              onchange="updateInv(${i},'valorActual',this.value)">
+          </div>
+          <div style="display:flex;align-items:flex-end">
+            <button onclick="delInv(${i})" style="background:none;border:none;color:var(--dim2);font-size:22px;cursor:pointer;padding:6px;line-height:1">×</button>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--dim);margin-bottom:5px">
+          <span>Capital: ${num2(inv.invertido)} €</span><span>Peso: ${peso.toFixed(1)}%</span>
+        </div>
+        <div class="prog-track"><div class="prog-fill" style="background:${inv.color};width:${peso}%"></div></div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── METAS TAB ──
+  const ml = document.getElementById('metas-list');
+  ml.innerHTML = S.metas.map((meta,i)=>{
+    const pct = Math.min((meta.actual/meta.objetivo)*100, 100);
+    return `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+        <div style="font-family:'DM Serif Display',serif;font-size:17px;color:var(--text)">${esc(meta.nombre)}</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:12px">
+          <div style="font-size:12px;color:var(--muted)">${num2(meta.actual)} / ${num2(meta.objetivo)} €</div>
+          <button onclick="delMeta(${i})" style="background:none;border:none;color:var(--dim2);font-size:20px;cursor:pointer;line-height:1">×</button>
+        </div>
+      </div>
+      <div class="prog-track" style="margin-bottom:8px">
+        <div class="prog-fill" style="background:${pct>=100?'var(--green)':'var(--indigo)'};width:${pct}%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-bottom:14px">
+        <span>${pct.toFixed(0)}% alcanzado</span>
+        <span>Faltan ${num2(Math.max(meta.objetivo-meta.actual,0))} €</span>
+      </div>
+      <div class="field-row" style="align-items:center">
+        <input class="inp inp-sm" type="number" inputmode="decimal" placeholder="Actualizar ahorro actual €" style="flex:1"
+          onchange="updateMeta(${i},this.value);this.value=''">
+      </div>
+    </div>`;
+  }).join('');
+
+  // nomina input
+  document.getElementById('nomina-inp').value = S.nomina;
+}
+
+// XSS-safe escaping
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ════════════════════════════════════════════════════════
+//  TABS
+// ════════════════════════════════════════════════════════
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('pane-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════
+load();
+render();
+</script>
+</body>
+</html>
